@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>new</title>
+</head>
+<body>
+<script>
+    function newV2(ctx, ...arg) {
+        const obj = {}
+        obj.__proto__ = ctx.prototype
+        const res = ctx.call(obj, ...arg)
+        // 如果构造函数有返回对象,就给返回的对象.
+        return typeof res === 'object' ? res : obj
+    }
+
+    function Person(name, age) {
+        this.age = age
+        this.name = name
+    }
+
+    Person.prototype.height = 120
+    Person.prototype.sayName = function () {
+        console.log(`my name is ${this.name}`)
+    }
+    const p1 = new Person('bob', 18)
+    console.log(p1)
+    const p2 = newV2(Person, 'smith', 22)
+    console.log(p2)
+</script>
+</body>
+</html>

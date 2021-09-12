@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+</body>
+<script>
+    "use strict";
+    const definePropertyObj = {}
+    Object.defineProperty(definePropertyObj, "name", {
+        value: "bob",
+        // enumerable: true,
+        writable: true,
+        configurable:true
+        // get(){
+        //     return 'smith'
+        // }
+    })
+
+    const obj = {
+        name:'bob',
+    }
+
+    const proxy = new Proxy(obj,{
+
+    })
+    // Reflect.ownKeys()
+
+    console.log(proxy)
+    const newArr = Object.create(Array.prototype)
+    newArr.push = function (...arg){
+        console.log('执行了push')
+        Array.prototype.push.call(this,...arg)
+    }
+    console.log(newArr)
+    function arrObserve(target){
+        target.__proto__ = newArr
+    }
+    const arr = [1,2,3,4]
+    arrObserve(arr)
+    arr.push(100000)
+    console.log(arr)
+
+
+
+</script>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bind and call</title>
+</head>
+<body>
+
+<script>
+    Function.prototype.bind2 = function (obj, ...arg1) {
+        const self = this
+        function R(...arg2) {
+            // 如果new了R,就用this作为上下文
+            return self.call(this instanceof R ? this : obj, ...arg1.concat(arg2))
+        }
+        const F = function (){}
+        F.prototype = this.prototype
+        R.prototype = new F()
+        return R
+    }
+
+
+    Function.prototype.call2 = function (ctx, ...arg) {
+        ctx = ctx || window
+        ctx.__func = this;
+        // 处理返回
+        const res = ctx.__func(...arg)
+        delete ctx.__func
+        return res;
+
+    }
+
+    const obj = {
+        name: 'bob'
+    }
+
+    // function printMe(age) {
+    //     this.age = age
+    //     console.log(this)
+    // }
+    //
+    // printMe.call2(obj, 18)
+
+    function bar(name, age) {
+        this.name = name
+        this.age = age
+        console.log(this)
+        return 'heihei'
+    }
+    bar.prototype.barFunc = ()=>{}
+
+    const bindBar = bar.bind2(obj, 'obo')
+    bindBar.prototype.bindBarFunc = ()=>{}
+    let p = new bindBar(18)
+    console.log(p)
+</script>
+
+</body>
+</html>

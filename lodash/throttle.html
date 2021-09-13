@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>throttle</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+
+</head>
+<body>
+
+<div class="p-20">
+    <div id="btn" class="p-10 w-32 h-32 flex items-center justify-center bg-red-200 shadow rounded-full">click</div>
+</div>
+
+</body>
+<script>
+    function throttle(func, delay, options = {leading: false, trailing: true}) {
+        let timer, previous = 0;
+        let resFunc;
+        const {leading, trailing} = options
+        resFunc = function (...args) {
+            const now = Date.now()
+            if(!leading) previous = now
+            let remaining = (previous + delay) - now
+            if (remaining <= 0) {
+                if (timer) {
+                    clearTimeout(timer)
+                    timer = null
+                }
+                previous = now
+                func.call(this, ...args)
+
+            } else if (!timer && trailing) {
+                timer = setTimeout(() => {
+                    previous = now
+                    timer = null;
+                    func.call(this, ...args)
+                }, remaining)
+            }
+            console.log(remaining)
+
+        };
+        return resFunc
+    }
+
+    function sayHi(e) {
+        console.log('say Hi', this, e)
+    }
+
+    const btn = document.querySelector('#btn')
+    const throttleSayHi = throttle(sayHi, 1000)
+    btn.addEventListener('click', throttleSayHi)
+    const event = new Event('click');
+    // setInterval(() => {
+    //     btn.dispatchEvent(event)
+    // }, 400)
+</script>
+</html>

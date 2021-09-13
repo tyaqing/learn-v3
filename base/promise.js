@@ -42,10 +42,22 @@ class MyPromise {
                 this._rejectedQueue.forEach(func => func(error))
             }
 
-            this._status = FULFILLED
-            this._value = res
-            runFulfilled(res)
-
+            // 如果resolve传进来的是Promise实例,则执行之
+            if (res instanceof MyPromise) {
+                res.then(data => {
+                    this._value = data;
+                    this._status = FULFILLED
+                    runFulfilled(data)
+                }, error => {
+                    this._value = error
+                    this._status = REJECTED
+                    runRejected(error)
+                })
+            } else {
+                this._status = FULFILLED
+                this._value = res
+                runFulfilled(res)
+            }
         }
         setTimeout(run)
     }

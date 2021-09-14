@@ -14,23 +14,31 @@
 
 </body>
 <script>
-    function throttle(func, delay, options = {leading: false, trailing: true}) {
+    function throttle(func, delay, options = {leading: true, trailing: false}) {
         let timer, previous = 0;
         let resFunc;
         const {leading, trailing} = options
+        /*
+        简言之
+        leading触发使用时间戳remaining做计算
+        trailing触发使用定时器timer结合remaining做触发
+         */
         resFunc = function (...args) {
             const now = Date.now()
-            if(!leading) previous = now
+            // 如果leading不触发,就让remaining一直为delay
+            if (!leading) previous = now
             let remaining = (previous + delay) - now
             if (remaining <= 0) {
+                // 这里是
                 if (timer) {
                     clearTimeout(timer)
                     timer = null
                 }
                 previous = now
                 func.call(this, ...args)
-
+                // 判断timer防止二次调用
             } else if (!timer && trailing) {
+                // 这里是trailing的逻辑
                 timer = setTimeout(() => {
                     previous = now
                     timer = null;
@@ -40,6 +48,11 @@
             console.log(remaining)
 
         };
+        resFunc.cancel = function () {
+            clearTimeout(timer)
+            previous = 0;
+            timer = null
+        }
         return resFunc
     }
 

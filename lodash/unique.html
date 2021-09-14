@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>unique</title>
+</head>
+<body>
+
+</body>
+<script>
+
+    // 键值对去重,对象内容相同会去重 因此是全部去重
+    function uniqueKV(array) {
+        const obj = {};
+        return array.filter(function (item) {
+            const key = typeof item + JSON.stringify(item)
+            return obj.hasOwnProperty(key) ? false : (obj[key] = true)
+        })
+    }
+
+    function uniqueKV2(arr) {
+        const set = new Set()
+        return arr.filter(item => {
+            const key = typeof item + JSON.stringify(item)
+            if (set.has(key)) return false
+            else {
+                set.add(key)
+                return true
+            }
+        })
+    }
+
+    // 对象不去重
+    // 我的理解是对象地址本来不一样,所以不去重. 如果是相同对象(即相同地址)则去重
+    function uniqueSet(arr) {
+        const set = new Set()
+        for (const a of arr) {
+            set.add(a)
+        }
+        return Array.from(set)
+    }
+
+    const array = [1, 1, '1', '1', null, null, undefined, undefined, String('1'), String('1'), /a/, /a/, NaN, NaN];
+
+
+    console.log(uniqueKV(array))
+    console.log(uniqueSet(array))
+</script>
+</html>

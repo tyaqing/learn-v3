@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lifecycle</title>
+</head>
+<body>
+<div class="custom" id="app">
+    <p>{{message}}</p>
+    <keep-alive>
+        <my-components :msg="msg1" v-if="show">
+
+        </my-components>
+    </keep-alive>
+</div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+<script>
+    var child = {
+        template: '<div>from child: {{childMsg}}</div>',
+        props: ['msg'],
+        data: function () {
+            return {
+                childMsg: 'child'
+            }
+        },
+        beforeCreate: function () {
+            debugger;
+        },
+        created: function () {
+            debugger;
+        },
+        beforeMount: function () {
+            debugger;
+        },
+        mounted: function () {
+            debugger;
+        },
+        deactivated: function () {
+            alert("keepAlive停用");
+        },
+        activated: function () {
+            console.log('component activated');
+        },
+        beforeDestroy: function () {
+            console.group('beforeDestroy 销毁前状态===============》');
+            var state = {
+                'el': this.$el,
+                'data': this.$data,
+                'message': this.message
+            }
+            console.log(this.$el);
+            console.log(state);
+        },
+        destroyed: function () {
+            console.group('destroyed 销毁完成状态===============》');
+            var state = {
+                'el': this.$el,
+                'data': this.$data,
+                'message': this.message
+            }
+            console.log(this.$el);
+            console.log(state);
+        },
+    };
+
+    var vm = new Vue({
+        el: '#app',
+        data: {
+            message: 'father',
+            msg1: "hello",
+            show: true
+        },
+        beforeCreate: function () {
+            debugger;
+        },
+        created: function () {
+            debugger;
+        },
+        beforeMount: function () {
+            debugger;
+        },
+        mounted: function () {
+            debugger;
+        },
+        beforeUpdate: function () {
+            alert("页面视图更新前");
+
+        },
+        updated: function () {
+            alert("页面视图更新后");
+        },
+        watch: {
+            show(val) {
+                console.log('show has changed', val)
+            }
+        },
+        computed:{
+            allMsg(){
+                return this.message + this.msg1
+            }
+        },
+        beforeDestroy: function () {
+            console.group('beforeDestroy 销毁前状态===============》');
+            var state = {
+                'el': this.$el,
+                'data': this.$data,
+                'message': this.message
+            }
+            console.log(this.$el);
+            console.log(state);
+        },
+        destroyed: function () {
+            console.group('destroyed 销毁完成状态===============》');
+            var state = {
+                'el': this.$el,
+                'data': this.$data,
+                'message': this.message
+            }
+            console.log(this.$el);
+            console.log(state);
+        },
+        components: {
+            'my-components': child,
+        }
+    });
+</script>
+</html>

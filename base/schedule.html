@@ -26,15 +26,18 @@
         }
 
         schedule() {
-            if (this.run.length < this.count && this.queue.length) {
-                const task = this.queue.shift()
-                const promise = task().then(() => {
+            // 如果run队列未满,加入队列执行
+            if (this.queue.length > 0 && this.run.length < this.count) {
+                const t = this.queue.shift()
+                const promise = t().then(() => {
                     this.run.splice(this.run.indexOf(promise), 1)
                 })
                 this.run.push(promise)
                 return promise
-            } else return Promise.race(this.run).then(() => this.schedule())
-
+            } else {
+                // 如果任务队列满了,就等待最快的那个promise,并在这个promise注册then
+                return Promise.race(this.run).then(() => this.schedule())
+            }
         }
     }
 
@@ -51,7 +54,7 @@
     addTask(1000, '1')
     addTask(500, '2')
     addTask(300, '3')
-    // addTask(400, '4')
+    addTask(400, '4')
 
     // output: 2 3 1 4
 

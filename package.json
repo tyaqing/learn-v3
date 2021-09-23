@@ -19,6 +19,7 @@
   "homepage": "https://github.com/tyaqing/learn-v3#readme",
   "devDependencies": {
     "@babel/core": "^7.15.5",
-    "@babel/preset-env": "^7.15.6"
+    "@babel/preset-env": "^7.15.6",
+    "@babel/types": "^7.15.6"
   }
 }

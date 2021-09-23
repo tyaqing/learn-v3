@@ -29,11 +29,12 @@
             if (!leading) previous = now
             let remaining = (previous + delay) - now
             if (remaining <= 0) {
-                // 这里是
+                // 这里是先去掉之前的定时器
                 if (timer) {
                     clearTimeout(timer)
                     timer = null
                 }
+                // 记录当前时间,等时间过后才可以触发
                 previous = now
                 func.call(this, ...args)
                 // 判断timer防止二次调用

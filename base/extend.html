@@ -6,6 +6,7 @@
 </head>
 <body>
 <script>
+    // 寄生组合模式构造继承
     function Person(name) {
         this.name = name
     }
@@ -15,6 +16,7 @@
     }
 
     function Boy(name, age) {
+        // 相当于super,执行一下父级的函数
         Person.call(this, name)
         this.age = age
     }

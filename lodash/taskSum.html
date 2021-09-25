@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+<script>
+    /* 实现
+    taskSum(1000, () => {
+        console.log(1)
+    }).task(1200, () => {
+        console.log(2)
+    }).task(1300, () => {
+        console.log(3)
+    })
+     这里等 待 1s，打印 1，之后等待 1.2s，打印 2，之后打印 1.3s，打印 3
+     */
+    // 包装定时器
+    const setTimeoutWrap = (t) => {
+        return new Promise(resolve => setTimeout(resolve, t))
+    }
+
+    function taskSum(delay, func) {
+        const queue = []
+        // 借助函数属性
+        const main = function () {}
+        main.task = function (delay2, func2) {
+            const f = () => {
+                setTimeoutWrap(delay2, func2).then(() => {
+                    func2()
+                    // 当前任务完成后继续执行
+                    executor()
+                })
+            }
+            queue.push(f)
+            return main
+        }
+        // 队列执行函数
+        function executor() {
+            const task = queue.shift()
+            task && task();
+        }
+
+        main.task(delay, func)
+        executor()
+        return main
+    }
+
+    let t = Date.now()
+    taskSum(1000, () => {
+        console.log(1, Date.now() - t)
+    }).task(1200, () => {
+        console.log(2, Date.now() - t)
+    }).task(1300, () => {
+        console.log(3, Date.now() - t)
+    })
+
+    taskSum(1000, () => {
+        console.log(1)
+    }).task(1200, () => {
+        console.log(2)
+    }).task(1300, () => {
+        console.log(3)
+    })
+</script>
+</html>

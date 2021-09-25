@@ -15,16 +15,14 @@
 
     class Scheduler {
         constructor() {
-            this.count = 2
+            this.count = 5
             this.queue = []
             this.run = []
         }
-
         add(task) {
             this.queue.push(task)
             return this.schedule()
         }
-
         schedule() {
             // 如果run队列未满,加入队列执行
             if (this.queue.length > 0 && this.run.length < this.count) {
@@ -51,10 +49,13 @@
         scheduler.add(() => timeout(time)).then(() => console.log(order))
     }
 
-    addTask(1000, '1')
-    addTask(500, '2')
-    addTask(300, '3')
-    addTask(400, '4')
+    const random = () => {
+        return Math.floor(Math.random() * 1000)
+    }
+    for (let i = 0; i < 50; i++) {
+        addTask(random(), i)
+    }
+
 
     // output: 2 3 1 4
 

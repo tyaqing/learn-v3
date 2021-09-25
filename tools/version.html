@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>version</title>
+</head>
+<body>
+
+</body>
+<script>
+    /*
+    10. versions 是一个项目的版本号列表，因多人维护，不规则
+    var versions=['1.45.0','1.5','6','3.3.3.3.3.3.3']
+    要求从小到大排序，
+    注意'1.45'比'1.5'大
+    sorted=['1.5','1.45.0','3.3.3.3.3.3','6']
+    https://segmentfault.com/a/1190000023485915
+    * */
+    const v = ['1.45.0','1.5','6','3.3.3.3.3.3.3']
+    .sort((a, b) => {
+        let i = 0;
+        const arr1 = a.split('.');
+        const arr2 = b.split('.');
+        while (true) {
+            const s1 = arr1[i];
+            const s2 = arr2[i++];
+            if (s1 === undefined || s2 === undefined) {
+                return arr2.length - arr1.length;
+            }
+            if (s1 === s2) continue;
+            return s1 - s2;
+        }
+    });
+    console.log(v)
+</script>
+</html>

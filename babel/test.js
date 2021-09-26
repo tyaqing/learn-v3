@@ -9,7 +9,7 @@ function importPlugin(opt) {
         visitor: {
             ImportDeclaration(path) {
                 const node = path.node
-                // console.log("ImportDeclaration -> node", node)
+                // console.log("ImportDeclaration -> nodejs", nodejs)
                 // 得到节点的详细说明，然后转换成多个的 import 声明
                 const specifiers = node.specifiers
                 // 要处理这个我们做一些判断，首先判断不是默认导出我们才处理，要考虑 import vant, { Button, Icon } from 'vant' 写法

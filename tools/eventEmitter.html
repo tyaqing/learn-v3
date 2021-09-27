@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eventEmitter</title>
+</head>
+<body>
+
+</body>
+<script>
+    // 实现发布订阅
+
+    class eventEmitter {
+        hub = {}
+        emit(name, data) {
+            if (!this.hub[name]) throw Error('没有注册发布者')
+            this.hub[name].forEach(cb => cb(data))
+        }
+        on(name, cb) {
+            if (!this.hub[name]) {
+                this.hub[name] = []
+            }
+            this.hub[name].push(cb)
+        }
+        off(name, func) {
+            if (this.hub[name]) {
+                const funcIndex = this.hub[name].indexOf(func)
+                // console.log(funcIndex)
+                this.hub[name].splice(funcIndex, 1)
+            }
+        }
+        offAll(name) {
+            if (this.hub[name]) {
+                delete this.hub[name]
+            }
+        }
+    }
+
+    const eventBus = new eventEmitter()
+    eventBus.on('first', (data) => {
+        console.log('收到first信息1', data)
+    })
+    const someFunc = (data) => {
+        console.log('收到first信息2', data)
+    }
+    eventBus.on('first', someFunc)
+
+
+    eventBus.emit('first', '嘿嘿')
+    eventBus.off('first', someFunc)
+    eventBus.emit('first', '第二条')
+
+
+</script>
+</html>

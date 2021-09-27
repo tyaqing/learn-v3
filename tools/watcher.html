@@ -2,9 +2,39 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>手写观察者模式</title>
+    <title>watcher</title>
 </head>
 <body>
+<script>
+    // 观察者模式 使用类实现
+    class Observe {
+        constructor(cb) {
+            this.cb = cb
+        }
+        update(data) {
+            this.cb(data)
+        }
+    }
+    class Subject {
+        queue = []
+        addObserve(o) {
+            this.queue.push(o)
+        }
+        notify(data) {
+            this.queue.forEach(cb=>cb.update(data))
+        }
+    }
+    const observe  = new Observe((data)=>{
+        console.log('我被通知了',data)
+    })
+    const subject = new Subject()
+    subject.addObserve(observe)
+    subject.notify('嘿嘿嘿额')
 
+
+
+
+</script>
 </body>
+
 </html>

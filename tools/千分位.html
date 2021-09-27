@@ -8,6 +8,36 @@
 
 </body>
 <script>
-  //https://blog.csdn.net/lihchweb/article/details/77982895
+    //https://juejin.cn/post/6844903945047900173
+
+    // 原生方法
+    function parse(n) {
+        return Number(n).toLocaleString()
+    }
+    //(?=pattern) 零宽正向先行断言
+    function parseV2(n) {
+        return String(n).replace(/(\d)(?=(\d{3})+(\.|$))/g, '$1,');
+    }
+    // 分组的形式
+    function parseV3(n) {
+        const res = Number(n).toFixed(2).toString().split('.')
+        const combine = []
+        // 位数朝上
+        const count = Math.ceil(res[0].length / 3)
+        for (let i = 1; i <= count; i++) {
+            combine.unshift(res[0].slice(-3 * i, res[0].length - (3 * (i - 1))))
+        }
+        return combine.join(',') + '.' + res[1]
+    }
+
+    const price = 77281.23
+    const price2 = 1177281
+
+    console.log(parse(price))
+    console.log(parseV2(price))
+    console.log(parseV3(price))
+    console.log(parse(price2))
+    console.log(parseV2(price2))
+    console.log(parseV3(price2))
 </script>
 </html>

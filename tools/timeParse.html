@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script>
+    // 3、日期转化为 2 小时前，1 分钟前等
+    function parse(date) {
+        // 转换成秒
+        const gapSecond = Math.floor((Date.now() - date) / 1000)
+        const gapMinuet = gapSecond / 60
+        const gapHour = gapMinuet / 60
+        if(gapMinuet<60){
+            return `${Math.floor(gapMinuet)}分钟前`
+        }else{
+            return `${Math.floor(gapMinuet/60)}小时前`
+        }
+        // console.log(gap)
+    }
+    const date1 = new Date('2021-09-27 00:00:00')
+    console.log(parse(date1))
+</script>
+</body>
+</html>

@@ -8,52 +8,36 @@
 <button id="btn">click</button>
 </body>
 <script>
-
-    /*
-    1.完成节流功能,保证被节流函数this正确
-    2.保证事件e传参正确
-    3.实现immediate功能
-    4.实现取消功能
-     */
-
-    function debounce(func, delay, immediate = false) {
-        let timer = null
-        const main = function (...args) {
-            timer && clearTimeout(timer)
-            if (immediate) {
-                // ⭐️
-                const canRun = !timer
-                console.log('run',canRun)
-
-                timer = setTimeout(() => {
-                    timer = null
-                }, delay)
-                if (canRun) return func.call(this, ...args)
-
-            } else {
-                timer = setTimeout(() => {
-                    func.call(this, ...args)
-                    timer = null
-                }, delay)
-            }
+    function Foo(){
+        getName = function (){
+            console.log(1)
         }
-        main.cancel = function () {
-            clearTimeout(timer)
-            timer = null
-        }
-        return main;
+        return this
+    }
+    Foo.getName = function (){
+        console.log(2)
+    }
+    Foo.prototype.getName = function (){
+        console.log(3)
+    }
+    var getName = function (){
+        console.log(4)
+    }
+    function getName(){
+        console.log(5)
     }
 
+    // 总体就是 new 带参数列表优先与不带参数列表
+    // https://github.com/Wscats/articles/issues/85
+    Foo.getName()  // 2
+    getName() // 4
+    Foo().getName()  //1
+    getName() //1
+    new Foo.getName() // 2  .的优先级最高 相当于new (Foo.getName)()
+    new Foo().getName() //3  (new Foo()).getName()
+    new new Foo().getName() // new (new Foo()).getName()
+    new (new Foo()).getName()
 
-    function alwaysTalk(e) {
-        console.log('talk', Math.floor(Math.random() * 100))
-        console.log(this, e)
-    }
-
-    const btn = document.querySelector('#btn')
-    const debounceAlwaysTalk = debounce(alwaysTalk, 1000, true)
-    btn.addEventListener('click', debounceAlwaysTalk)
-    debounceAlwaysTalk.cancel()
 
 </script>
 </html>

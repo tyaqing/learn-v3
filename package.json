@@ -22,5 +22,8 @@
     "@babel/preset-env": "^7.15.6",
     "@babel/types": "^7.15.6",
     "tapable": "^2.2.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
   }
 }

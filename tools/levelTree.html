@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>level tree</title>
+</head>
+<body>
+
+<script>
+    // 通过 parentId 属性来将一个数组构造成有层级关系的树,类似于comment
+    // 输入
+    const data = [{
+        id: 1,
+        parentId: 0
+    }, {
+        id: 2,
+        parentId: 1
+    }, {
+        id: 3,
+        parentId: 0
+    }]
+
+    // 输出
+    const res = [{
+        id: 1,
+        parentId: 0,
+        children: [{
+            id: 2,
+            parentId: 1
+        }]
+    }, {
+        id: 3,
+        parentId: 0
+    }]
+
+</script>
+</body>
+</html>

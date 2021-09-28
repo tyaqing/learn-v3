@@ -14,9 +14,31 @@
             border-bottom: 50px solid #1abc9c;
             border-right: 20px solid white;
         }
+        .rectangle{
+            width: 1280px;
+            background: #4acfff;
+        }
+        .rectangle::after{
+            content: "";
+            display: block;
+            padding-top: calc(9 / 16 * 100%)
+        }
+        .content{
+            position: absolute;
+        }
+
     </style>
 </head>
 <body>
 <div class="ladder"></div>
+
+<!--自适应矩形-->
+<div class="rectangle">
+    <div class="content">
+        asdfasdfa
+    </div>
+</div>
+
+
 </body>
 </html>

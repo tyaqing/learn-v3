@@ -8,15 +8,13 @@
 <button id="btn">click</button>
 </body>
 <script>
-
-    let a ='144115197458450067'
-    // 9223372036854775000
-    // 144115197458450067
-    console.log((144115197458450067).toString())
-    console.log(Number(144115197458450067))
-    // console.log(BigInt(144115197458450067))
-    console.log(99999999999999991)
-    console.log('9999999999999999')
+    for (var i = 0; i < 6; i++) {
+        (function (i){
+            setTimeout(function () {
+                console.log(i);
+            }, 1000)
+        })(i)
+    }
 
 </script>
 </html>

@@ -17,7 +17,7 @@
             return obj.hasOwnProperty(key) ? false : (obj[key] = true)
         })
     }
-
+    // 和上面一样
     function uniqueKV2(arr) {
         const set = new Set()
         return arr.filter(item => {
@@ -31,7 +31,7 @@
     }
 
     // 对象不去重
-    // 我的理解是对象地址本来不一样,所以不去重. 如果是相同对象(即相同地址)则去重
+    // 是对象地址本来不一样,所以不去重. 如果是相同对象(即相同地址)则去重
     function uniqueSet(arr) {
         const set = new Set()
         for (const a of arr) {
@@ -40,10 +40,14 @@
         return Array.from(set)
     }
 
-    const array = [1, 1, '1', '1', null, null, undefined, undefined, String('1'), String('1'), /a/, /a/, NaN, NaN];
-
+    // const array = [1, 1, '1', '1', null, null, undefined, undefined, String('1'), String('1'), /a/, /a/, NaN, NaN,{a:1},'{a:1}'];
+    const array = [1, 1, '1', 'NaN', NaN, {a: 1}, {a: 1}, '{a:1}']
+    // 说明一点的是,
+    // 用kv的方式可以去重相同数据的对象
+    // 用set可保留不同地址的对象
 
     console.log(uniqueKV(array))
+    console.log(uniqueKV2(array))
     console.log(uniqueSet(array))
 </script>
 </html>

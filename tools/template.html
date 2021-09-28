@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>template</title>
+</head>
+<body>
+
+<script>
+
+    function template(temp, data) {
+       const res =  temp.replace(/{{([\w\s]+)}}/g,function(all,match) {
+            console.log(arguments)
+            return data[match.trim()]
+        })
+        console.log(res)
+        return res
+    }
+
+    template('name is {{name}}, age is {{age }}', {name: 'tom', age: 16})
+
+    // my
+    // name is {{name}}, age is {{age }}' { name: 'tom', age: 16 }
+</script>
+</body>
+</html>

@@ -8,36 +8,15 @@
 <button id="btn">click</button>
 </body>
 <script>
-    function Foo(){
-        getName = function (){
-            console.log(1)
-        }
-        return this
-    }
-    Foo.getName = function (){
-        console.log(2)
-    }
-    Foo.prototype.getName = function (){
-        console.log(3)
-    }
-    var getName = function (){
-        console.log(4)
-    }
-    function getName(){
-        console.log(5)
-    }
 
-    // 总体就是 new 带参数列表优先与不带参数列表
-    // https://github.com/Wscats/articles/issues/85
-    Foo.getName()  // 2
-    getName() // 4
-    Foo().getName()  //1
-    getName() //1
-    new Foo.getName() // 2  .的优先级最高 相当于new (Foo.getName)()
-    new Foo().getName() //3  (new Foo()).getName()
-    new new Foo().getName() // new (new Foo()).getName()
-    new (new Foo()).getName()
-
+    let a ='144115197458450067'
+    // 9223372036854775000
+    // 144115197458450067
+    console.log((144115197458450067).toString())
+    console.log(Number(144115197458450067))
+    // console.log(BigInt(144115197458450067))
+    console.log(99999999999999991)
+    console.log('9999999999999999')
 
 </script>
 </html>

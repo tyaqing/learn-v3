@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>array function</title>
+</head>
+<body>
+
+
+<script>
+    // map方法
+    function map(arr, callback) {
+        const res = [];
+        if (!Array.isArray(arr) || arr.length === 0 || typeof callback !== 'function') return []
+        for (let i = 0; i < arr.length; i++) {
+            res.push(callback(arr[i], i, arr))
+        }
+        return res;
+    }
+    // filter方法
+    function filter(arr, callback) {
+        const res = []
+        for (let i = 0; i < arr.length; i++) {
+            if (callback(arr[i], i, arr)) res.push(arr[i])
+        }
+        return res
+    }
+    // reduce方法
+    function reduce(arr, callback, initialValue) {
+        const hasInitialValue = initialValue !== undefined;
+        let value = hasInitialValue ? initialValue : arr[0]
+        for (let i = hasInitialValue ? 0 : 1; i < arr.length; i++) {
+            value = callback(value, arr[i], i, arr)
+        }
+        return value
+
+    }
+    const oArr = [1, 2, 3, 4, 5, 6, 7, 8]
+    console.log(map(oArr, (item, index) => {
+        return item + 1;
+    }))
+    console.log(filter(oArr, (item, index) => {
+        return item % 2;
+    }))
+    console.log(reduce(oArr, (prev, item) => {
+        return prev + item;
+    }), 0)
+    console.log(oArr.reduce((prev , item)=>{
+        return prev + item;
+    }))
+</script>
+</body>
+</html>

@@ -14,5 +14,16 @@
 <body>
 </body>
 <script>
+    // '' == false => '' == 0 => 0 == 0
+    if ([] == false) {console.log(1);};
+    // '[Object object]' ==  0 => NaN == 0
+    if ({} == false ) {console.log(2);};
+    // true
+    if ([]) {console.log(3);};
+    // 同类型就对比指针
+    if ([1] == [1]) {console.log(4);};
+
+    //TODO
+    // JS中区分`array` `object` `date``function`
 </script>
 </html>

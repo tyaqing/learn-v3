@@ -2,18 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width,initial-scan=1.0,user-scalable=no">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <title>debounce</title>
 </head>
 <body>
-<!--<button id="btn">click</button>-->
-<a href="#hash">hash</a>
-<a href="#sssss" target="_blank">balnk</a>
-<a href="#sssss" target="_self">self</a>
+
 </body>
 <script>
-    // console.log(sessionStorage.getItem('firstSession'))
-    // sessionStorage.setItem('firstSession', '玩玩具')
+    function quicksort(arr) {
+        if (arr.length <= 1) return arr;
+        const pivotIndex = Math.floor(arr.length / 2);
+        const pivot = arr.splice(pivotIndex, 1)[0];
+        const left = [];
+        const right = [];
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] < pivot) {
+                left.push(arr[i]);
+            } else {
+                right.push(arr[i]);
+            }
+        }
+        return quicksort(left).concat(pivot, quicksort(right));
+    }
+    var sortArray = function (nums) {
+        if (nums.length <= 1) return nums;
+        const pivotIndex = Math.floor(nums.length / 2)
+        const pivot = nums.splice(pivotIndex, 1)
+        const left = [], right = [];
+        for (const n of nums) {
+            if (n > pivot) left.push(n)
+            else right.push(n)
+        }
+        return sortArray(left).concat(pivot, sortArray(right))
+    };
+    console.log(sortArray([4,5,8,2]))
 
 </script>
 </html>

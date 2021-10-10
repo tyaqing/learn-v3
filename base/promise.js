@@ -145,20 +145,17 @@ class MyPromise {
     }
 
     static all(list) {
-        return new MyPromise(function (resolve, reject) {
-            const resultArr = [];
-            let count = 0;
+        return new Promise((resolve, reject) => {
+            let count = 0
+            const res = Array(list.length)
             list.forEach((p, index) => {
-                MyPromise.resolve(p).then(data => {
-                    resultArr[index] = data
+                p.then((data) => {
+                    res[index] = data
                     count++
-                    if (count === list.length) resolve(resultArr)
-                }, error => {
-                    reject(error)
-                })
+                    if (count === list.length) resolve(res)
+                }, reject)
             })
         })
-
     }
 
     static race(list) {

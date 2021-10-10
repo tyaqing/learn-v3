@@ -6,15 +6,48 @@
 </head>
 <body>
 <script>
-  /*
-  7、const chain=new Chain();
-chain.eat().sleep(5).eat().sleep(6).eat().work()
-输出结果是:
-eat->sleep(5)->eat->sleep(6)->eat-work
-  * */
+    /*
+    7、const chain=new Chain();
+  chain.eat().sleep(5).eat().sleep(6).eat().work()
+  输出结果是:
+  eat->sleep(5)->eat->sleep(6)->eat-work
+    * */
+    class LazyManClass {
+        constructor(name) {
+            console.log(`I am ${name}`)
+            this._funs = []
+            setTimeout(() => {
+                this.next()
+            })
+        }
+        sleep(time) {
+            let fn = () => {
+                setTimeout(() => {
+                    console.log(`sleep ${time}`)
+                    this.next()
+                }, time)
+            }
+            this._funs.push(fn)
+            return this
+        }
+        eat(food) {
+            let fn = () => {
+                console.log(`eat ${food}`)
+                this.next()
+            }
+            this._funs.push(fn)
+            return this
+        }
+        next() {
+            let fn = this._funs.shift()
+            fn && fn()
+        }
 
-  console.log( ['1','2','3'].map(parseInt))
-  console.log(parseInt('1',0),parseInt('2',1),parseInt('3',2))
+    }
+    function LazyMan(name){
+        return new LazyManClass(name)
+    }
+    LazyMan('tony').eat('lunch').sleep(2000).eat('dinner')
 </script>
 </body>
 </html>

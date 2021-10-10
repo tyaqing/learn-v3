@@ -11,11 +11,12 @@
     // map方法
     function map(arr, callback) {
         const res = [];
+        // 校验参数
         if (!Array.isArray(arr) || arr.length === 0 || typeof callback !== 'function') return []
         for (let i = 0; i < arr.length; i++) {
             res.push(callback(arr[i], i, arr))
         }
-        return res;
+        return res
     }
     // filter方法
     function filter(arr, callback) {
@@ -24,15 +25,16 @@
             if (callback(arr[i], i, arr)) res.push(arr[i])
         }
         return res
+
     }
     // reduce方法
     function reduce(arr, callback, initialValue) {
-        const hasInitialValue = initialValue !== undefined;
-        let value = hasInitialValue ? initialValue : arr[0]
-        for (let i = hasInitialValue ? 0 : 1; i < arr.length; i++) {
-            value = callback(value, arr[i], i, arr)
+        const hasInitialValue = initialValue!==undefined
+        if(!hasInitialValue) initialValue = arr[0]
+        for(let i = hasInitialValue?0:1;i<arr.length;i++){
+            initialValue =  callback(initialValue,arr[i],i,arr)
         }
-        return value
+        return initialValue
 
     }
     const oArr = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -45,7 +47,7 @@
     console.log(reduce(oArr, (prev, item) => {
         return prev + item;
     }), 0)
-    console.log(oArr.reduce((prev , item)=>{
+    console.log(oArr.reduce((prev, item) => {
         return prev + item;
     }))
 </script>

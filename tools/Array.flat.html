@@ -6,5 +6,19 @@
 </head>
 <body>
 
+<script>
+    // 实现带有层级的flat
+    function flat(arr, depth = 1) {
+        console.log(depth)
+        if (!depth) return arr
+        return arr.reduce((prev, curr) => {
+            return prev.concat(Array.isArray(curr) ? flat(curr, depth - 1) : curr)
+        }, [])
+    }
+    const testArr = [1, [2, [3, [4]]], 5, [6]]
+    console.log(flat(testArr,))
+</script>
 </body>
+
+
 </html>

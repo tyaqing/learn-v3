@@ -18,7 +18,39 @@
     }, {
         id: 3,
         parentId: 0
-    }]
+    }, {
+        id: 4,
+        parentId: 3
+    }, {
+        id: 5,
+        parentId: 3
+    }
+    ]
+
+    // function transform(data) {
+    //     const res = {};
+    //     for (const item of data) {
+    //         res[item.id] = item
+    //     }
+    //     return res
+    // }
+    // const processedData = transform(data)
+
+    function parseTree(data, pid) {
+        const arr = [];
+        for (const item of data) {
+            if (item.parentId === pid) {
+                // item['children'] = parseTree(data,item.parentId)
+
+                arr.push(item)
+            }
+
+        }
+        return arr
+    }
+
+
+    console.log(parseTree(data, 0))
 
     // 输出
     const res = [{
@@ -32,6 +64,7 @@
         id: 3,
         parentId: 0
     }]
+
 
 </script>
 </body>

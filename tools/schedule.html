@@ -15,7 +15,7 @@
 
     class Scheduler {
         constructor() {
-            this.count = 5
+            this.count = 2
             this.queue = []
             this.run = []
         }
@@ -52,7 +52,7 @@
     const random = () => {
         return Math.floor(Math.random() * 1000)
     }
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 10; i++) {
         addTask(random(), i)
     }
 

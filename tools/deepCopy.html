@@ -37,8 +37,10 @@
     }
 
     function deepCopyV2(obj) {
-        if (typeof obj !== 'object') return obj
-        const res = Array.isArray(obj) ? [] : {};
+        // 判断是不是基本类型
+        if (typeof obj !== 'object') return obj;
+        // 判断数组
+        const res = Array.isArray(obj) ? [] : {}
         Object.keys(obj).forEach(i => res[i] = deepCopyV2(obj[i]))
         return res
     }

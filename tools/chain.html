@@ -10,20 +10,24 @@
 <script>
     // 实现 sum(1)(2)(3).valueOf()，实现这么一个 sum 函数，返回 6
     // 这里实现了简单的柯里化
-    function sum(...num1) {
-        //闭包存储
-        const hub = [];
-        // 初次执行则直接放入hub缓存
-        if (!hub.length) hub.push(...num1)
-        const main = function (...nums2) {
-            hub.push(...nums2)
+    function sum(...nums) {
+        //  闭包存储所有值
+        const stack = [];
+        stack.push(...nums)
+        function main(...nums2) {
+            stack.push(...nums2)
             return main
         }
         main.valueOf = function () {
-            return hub.reduce((sum, n) => n + sum, 0)
+            return stack.reduce((prev, curr) => {
+                return prev + curr
+            }, 0)
         }
         return main
     }
+
+    const sum1 = sum(1)
+    console.log(sum1(2,3)(4).valueOf())
 
 
     console.log(sum(1)(2)(3).valueOf())

@@ -9,14 +9,15 @@
 <script>
     // 实现带有层级的flat
     function flat(arr, depth = 1) {
-        console.log(depth)
-        if (!depth) return arr
+        // 如果depth到底了,就不进行concat了
+        if (!depth) return arr;
         return arr.reduce((prev, curr) => {
-            return prev.concat(Array.isArray(curr) ? flat(curr, depth - 1) : curr)
+            // 这里需要递归concat
+            return prev.concat(typeof curr === 'object' ? flat(curr, depth - 1) : curr)
         }, [])
     }
     const testArr = [1, [2, [3, [4]]], 5, [6]]
-    console.log(flat(testArr,))
+    console.log(flat(testArr, 1))
 </script>
 </body>
 

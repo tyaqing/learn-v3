@@ -9,18 +9,20 @@
 </body>
 <script>
     // 本质上是降低通用性，提高适用性。
-    const person = [{name: 'kevin'}, {name: 'daisy'}]
 
     function add(a, b, c, d) {
         return a + b + c + d
     }
 
-    function curry(func, ...arg) {
-        const length = func.length
-        return function (...arg2) {
-            const combine = arg.concat(arg2);
-            if (combine.length < length) return curry.call(this, func, ...combine)
+
+    function curry(func, ...args1) {
+        // 获取函数参数个数
+        const argLength = func.length
+        return function (...args2) {
+            const combine = args1.concat(args2)
+            if (combine.length < argLength) return curry.call(this, func, ...combine)
             else return func.call(this, ...combine)
+
         }
     }
 

@@ -12,28 +12,25 @@
 
     class eventEmitter {
         hub = {}
-        emit(name, data) {
-            if (!this.hub[name]) throw Error('没有注册发布者')
-            this.hub[name].forEach(cb => cb(data))
+        // 注册监听
+        on(name, func) {
+            if (!this.hub[name]) this.hub[name] = []
+            this.hub[name].push(func)
         }
-        on(name, cb) {
-            if (!this.hub[name]) {
-                this.hub[name] = []
-            }
-            this.hub[name].push(cb)
+        emit(name, data) {
+            if (!this.hub[name]) throw Error('this event is not register')
+            this.hub[name].forEach(func => func(data))
         }
         off(name, func) {
-            if (this.hub[name]) {
-                const funcIndex = this.hub[name].indexOf(func)
-                // console.log(funcIndex)
-                this.hub[name].splice(funcIndex, 1)
-            }
+            if (!this.hub[name]) throw Error('this event is not register')
+            const targetIndex = this.hub[name].indexOf(func)
+            this.hub[name].splice(targetIndex, 1)
         }
-        offAll(name) {
-            if (this.hub[name]) {
-                delete this.hub[name]
-            }
+        offAll(name){
+            if (!this.hub[name]) throw Error('this event is not register')
+            this.hub[name] = [];
         }
+
     }
 
     const eventBus = new eventEmitter()

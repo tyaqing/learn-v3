@@ -15,23 +15,23 @@
             this.cb(data)
         }
     }
+
     class Subject {
         queue = []
-        addObserve(o) {
-            this.queue.push(o)
-        }
         notify(data) {
-            this.queue.forEach(cb=>cb.update(data))
+            this.queue.forEach(cb => cb.update(data))
+        }
+        addObserve(observer) {
+            this.queue.push(observer)
         }
     }
-    const observe  = new Observe((data)=>{
-        console.log('我被通知了',data)
+
+    const observe = new Observe((data) => {
+        console.log('我被通知了', data)
     })
     const subject = new Subject()
     subject.addObserve(observe)
     subject.notify('嘿嘿嘿额')
-
-
 
 
 </script>

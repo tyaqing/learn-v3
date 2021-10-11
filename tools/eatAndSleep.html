@@ -13,38 +13,37 @@
   eat->sleep(5)->eat->sleep(6)->eat-work
     * */
     class LazyManClass {
+        queue = []
         constructor(name) {
-            console.log(`I am ${name}`)
-            this._funs = []
-            setTimeout(() => {
-                this.next()
-            })
+            console.log(name)
+            setTimeout(() => this.executor(), 0)
         }
-        sleep(time) {
-            let fn = () => {
+        eat(name) {
+            const fn  = ()=>{
+                console.log(`eat ${name}`)
+                this.executor()
+            }
+            this.queue.push(fn)
+            return this
+        }
+        sleep(delay) {
+            const fn = () => {
                 setTimeout(() => {
-                    console.log(`sleep ${time}`)
-                    this.next()
-                }, time)
+                    console.log(`sleep ${delay}`)
+                    this.executor()
+                }, delay)
             }
-            this._funs.push(fn)
+            this.queue.push(fn)
             return this
         }
-        eat(food) {
-            let fn = () => {
-                console.log(`eat ${food}`)
-                this.next()
-            }
-            this._funs.push(fn)
-            return this
-        }
-        next() {
-            let fn = this._funs.shift()
-            fn && fn()
+        executor() {
+            const task = this.queue.shift()
+            task && task()
         }
 
     }
-    function LazyMan(name){
+
+    function LazyMan(name) {
         return new LazyManClass(name)
     }
     LazyMan('tony').eat('lunch').sleep(2000).eat('dinner')

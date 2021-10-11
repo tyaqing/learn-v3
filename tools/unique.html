@@ -19,14 +19,12 @@
     }
     // 和上面一样
     function uniqueKV2(arr) {
-        const set = new Set()
-        return arr.filter(item => {
+        const set = new Set();
+        return arr.filter((item) => {
             const key = typeof item + JSON.stringify(item)
             if (set.has(key)) return false
-            else {
-                set.add(key)
-                return true
-            }
+            set.add(key)
+            return true
         })
     }
 

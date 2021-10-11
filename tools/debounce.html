@@ -40,6 +40,25 @@
         return main;
     }
 
+    function debounceV2(func, delay, immediate = false) {
+        let timer = null;
+        return function (...arg) {
+            if (timer) clearTimeout(timer)
+            if (immediate) {
+                const canRun = !timer
+                timer = setTimeout(() => {
+                    timer = null
+                }, delay)
+                if (canRun) func.call(this, ...arg)
+            } else {
+                timer = setTimeout(() => {
+                    func.call(this, ...arg)
+                }, delay)
+            }
+
+        }
+    }
+
 
     function alwaysTalk(e) {
         console.log('talk', Math.floor(Math.random() * 100))
@@ -47,9 +66,9 @@
     }
 
     const btn = document.querySelector('#btn')
-    const debounceAlwaysTalk = debounce(alwaysTalk, 1000, true)
+    const debounceAlwaysTalk = debounceV2(alwaysTalk, 1000, true)
     btn.addEventListener('click', debounceAlwaysTalk)
-    debounceAlwaysTalk.cancel()
+    // debounceAlwaysTalk.cancel()
 
 </script>
 </html>

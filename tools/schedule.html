@@ -14,29 +14,29 @@
     // 使得以下程序能正确输出
 
     class Scheduler {
-        constructor() {
-            this.count = 2
-            this.queue = []
-            this.run = []
+        queue = []
+        run = []
+        parallelCount = 2
+        add(fn) {
+            this.queue.push(fn)
+            return this.executor()
         }
-        add(task) {
-            this.queue.push(task)
-            return this.schedule()
-        }
-        schedule() {
-            // 如果run队列未满,加入队列执行
-            if (this.queue.length > 0 && this.run.length < this.count) {
-                const t = this.queue.shift()
-                const promise = t().then(() => {
-                    this.run.splice(this.run.indexOf(promise), 1)
-                })
+        executor() {
+            // 判断并发情况
+            if (this.queue.length && this.run.length < this.parallelCount) {
+                const task = this.queue.shift()
+                const promise = () => {
+                    return task.then(() => {
+                        this.queue.splice(this.queue.indexOf(promise), 1)
+                    })
+                }
                 this.run.push(promise)
                 return promise
             } else {
-                // 如果任务队列满了,就等待最快的那个promise,并在这个promise注册then
-                return Promise.race(this.run).then(() => this.schedule())
+                return Promise.race(this.run).then(() => this.executor())
             }
         }
+
     }
 
     const timeout = (time) => new Promise(resolve => {

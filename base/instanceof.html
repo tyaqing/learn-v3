@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function newInstanceOf(leftValue, rightValue) {
+        if (typeof leftValue !== 'object' || rightValue == null) {
+            return false;
+        }
+
+        let rightProto = rightValue.prototype;
+        leftValue = leftValue.__proto__;
+
+        while (true) {
+            if (leftValue === null) return false;
+            if (leftValue === rightProto) return true;
+            leftValue = leftValue.__proto__;
+        }
+    }
+
+    /*
+   * --- 验证 ---
+   */
+
+    const a = [];
+    const b = {};
+
+    function Foo() {
+    }
+
+    var c = new Foo()
+    function Child() {
+    }
+    function Father() {
+    }
+    Child.prototype = new Father()
+    var d = new Child()
+
+    console.log(newInstanceOf(a, Array)) // true
+    console.log(newInstanceOf(b, Object)) // true
+    console.log(newInstanceOf(b, Array)) // false
+    console.log(newInstanceOf(a, Object)) // true
+    console.log(newInstanceOf(c, Foo)) // true
+    console.log(newInstanceOf(d, Child)) // true
+    console.log(newInstanceOf(d, Father)) // true
+    console.log(newInstanceOf(123, Object)) // false
+    console.log(123 instanceof Object) // false
+
+</script>
+</body>
+</html>

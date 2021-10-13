@@ -7,21 +7,35 @@
 <body>
 
 <script>
-  //请实现语法支持 users.unique() 能够按 指定字段去重、排序
-  const users = [
-    {
-      id: 1,
-      name: '张三', },
-    {
-      id: 2,
-      name: '张三', },
-    {
-      id: 3,
-      name: '李四', },
-    {
-      id: 1,
-      name: '李四', }
-  ]
+    //请实现语法支持 users.unique() 能够按 指定字段去重、排序
+    const users = [
+        {
+            id: 1,
+            name: '张三',
+        },
+        {
+            id: 2,
+            name: '张三',
+        },
+        {
+            id: 3,
+            name: '李四',
+        },
+        {
+            id: 1,
+            name: '李四',
+        }
+    ]
+
+    users.unique = function (key) {
+        const set = new Set()
+        return this.filter(item => {
+            if (set.has(item[key])) return false
+            set.add(item[key])
+            return true
+        })
+    }
+    console.log(users.unique('name'))
 </script>
 </body>
 </html>

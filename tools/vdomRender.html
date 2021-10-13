@@ -2,19 +2,75 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>render</title>
 </head>
 <body>
+<div id="app"></div>
 <script>
-    // 写一个render,变成一个dom树
-    const vdom = {
-        type:'h1',
-        props:{
-            className:'xxx',
-            style:'color:red'
+    const app = document.querySelector('#app')
+    let data = {
+        tag: "ul",
+        props: {
+            class: "myClass",
+            id: 'myId',
+            on: {
+                // 传入点击事件
+                click: (e) => {
+                    console.log(e.targetElement, e.target)
+                }
+            }
+
         },
-        children:[]
+        children: [
+            {
+                tag: 'li',
+                props: {
+                    class: "list",
+                    on: {
+                        // 传入点击事件
+                        click: (e) => {
+                            console.log(e.targetElement, e.target)
+                        }
+                    }
+                },
+                children: "4万面五星红旗挂上武汉街头",
+
+            }, {
+                tag: 'li',
+                props: {
+                    class: "list",
+                },
+                children: "机场水门最高礼遇迎接烈士遗骸"
+            }
+        ]
     }
+    const render = (options) => {
+        let el = document.createElement(options.tag);
+        if (typeof options.props === 'object' && options.props !== null) {
+            for (key in options.props) {
+                vla = options.props[key];
+                console.log(key)
+                if (key === "on") {
+                    console.log(key)
+                    incident = options.props[key]
+                    for (k in incident) {
+                        el.addEventListener(k, e => incident[k](e))
+                    }
+                } else {
+                    el.setAttribute(key, vla);
+                }
+            }
+        }
+        if (options.children instanceof Array) {
+            options.children.forEach((item) => {
+                el.appendChild(render(item));
+            });
+        } else {
+            el.textContent = options.children
+        }
+        return el;
+    };
+    app.appendChild(render(data));
 </script>
 </body>
 </html>

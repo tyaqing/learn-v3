@@ -57,6 +57,16 @@
         return resFunc
     }
 
+    function throttleV2(func, delay) {
+        let timer = null
+        return function (...arg) {
+            if (timer) return
+            func.call(this, ...arg)
+            timer = setTimeout(() => {
+                timer = null
+            }, delay)
+        }
+    }
     function sayHi(e) {
         console.log('say Hi', this, e)
     }

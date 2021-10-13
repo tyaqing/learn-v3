@@ -3,25 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <title>debounce</title>
+    <title>practice</title>
+    <style>
+        ul{
+            background-color: rosybrown;
+        }
+        li{
+            background-color: rebeccapurple;
+        }
+    </style>
 </head>
 <body>
-
+<ul>
+    <li>hello 1</li>
+    <li>hello 2</li>
+    <li>hello 3</li>
+    <li>hello 4</li>
+</ul>
 </body>
 <script>
-    const data = [1, 3, 6,7, 9]
-    function search(arr, target) {
-        let left = 0, right = arr.length - 1;
-        while (left <= right) {
-            const pivotIndex = left + Math.floor((right - left) / 2)
-            const pivot = arr[pivotIndex]
-            if (target === pivot) return pivotIndex
-            else if (target < pivot) right = pivotIndex - 1
-            else left = pivotIndex + 1
-        }
-        console.log(right)
-        return -1
-    }
-    console.log(search(data,4))
+
+    let ul = document.querySelectorAll('ul')[0]
+    let aLi = document.querySelectorAll('li')
+    document.body.addEventListener('click',function (e){
+        console.log(e.target)
+        console.log(e.currentTarget)
+
+    })
+    ul.addEventListener('click',function(e){
+        let oLi1 = e.target
+        let oLi2 = e.currentTarget
+        console.log(oLi1)   //  被点击的li
+        console.log(oLi2)   // ul
+        console.log(oLi1===oLi2)  // false
+    })
 </script>
 </html>

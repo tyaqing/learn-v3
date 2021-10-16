@@ -29,10 +29,10 @@
     }
     // reduce方法
     function reduce(arr, callback, initialValue) {
-        const hasInitialValue = initialValue!==undefined
-        if(!hasInitialValue) initialValue = arr[0]
-        for(let i = hasInitialValue?0:1;i<arr.length;i++){
-            initialValue =  callback(initialValue,arr[i],i,arr)
+        const hasInitialValue = initialValue !== undefined
+        if (!hasInitialValue) initialValue = arr[0]
+        for (let i = hasInitialValue ? 0 : 1; i < arr.length; i++) {
+            initialValue = callback(initialValue, arr[i], i, arr)
         }
         return initialValue
 

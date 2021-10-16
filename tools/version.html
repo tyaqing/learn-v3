@@ -16,21 +16,34 @@
     sorted=['1.5','1.45.0','3.3.3.3.3.3','6']
     https://segmentfault.com/a/1190000023485915
     * */
-    const v = ['1.45.0','1.5','6','3.3.3.3.3.3.3']
-    .sort((a, b) => {
-        let i = 0;
-        const arr1 = a.split('.');
-        const arr2 = b.split('.');
-        while (true) {
-            const s1 = arr1[i];
-            const s2 = arr2[i++];
-            if (s1 === undefined || s2 === undefined) {
-                return arr2.length - arr1.length;
-            }
-            if (s1 === s2) continue;
-            return s1 - s2;
-        }
-    });
-    console.log(v)
+    const arr = ['1.45.0', '1.5', '6', '3.3.3.3.3.3.3']
+
+    // v.sort((a, b) => {
+    //     let i = 0;
+    //     const arr1 = a.split('.');
+    //     const arr2 = b.split('.');
+    //     while (true) {
+    //         const s1 = arr1[i];
+    //         const s2 = arr2[i++];
+    //         if (s1 === undefined || s2 === undefined) {
+    //             return arr2.length - arr1.length;
+    //         }
+    //         if (s1 === s2) continue;
+    //         return s1 - s2;
+    //     }
+    // });
+    // console.log(v)
+
+    // 加权法
+    const p = 1000;
+    const gen = (arr) =>
+        arr.split('.').reduce(reducer, 0);
+    const reducer = (acc, value, index) =>
+        acc + (+value) * Math.pow(p, arr.length - index - 1);
+
+    arr.sort((a, b) => gen(a) > gen(b) ? -1 : 1);
+
+    console.log(arr)
+
 </script>
 </html>

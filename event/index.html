@@ -9,9 +9,9 @@
     </style>
 </head>
 <body>
-    <div class="div p-20 bg-yellow-200">
-        <button class="bg-purple-600 text-white	 text-violet-700 text-base px-6 py-2 rounded-lg" id="but">click</button>
-    </div>
+<div class="div p-20 bg-yellow-200">
+    <button class="bg-purple-600 text-white	 text-violet-700 text-base px-6 py-2 rounded-lg" id="but">click</button>
+</div>
 
 
 </body>
@@ -19,18 +19,14 @@
     const div = document.querySelector('.div')
     const btn = document.querySelector('#but')
 
-    btn.addEventListener('click',cb,false)
-    div.addEventListener('click',cb,false)
-    btn.addEventListener('click',cb,true)
-    div.addEventListener('click',cb,true)
-    var phases = {
-        1: 'capture',
-        2: 'target',
-        3: 'bubble'
-    };
-    function  cb(e){
-        console.log( phases[e.eventPhase])
-        e.eventPhase===2&& e.stopPropagation()
+    btn.addEventListener('click', cb, true)
+    div.addEventListener('click', cb, false)
+    btn.addEventListener('click', (event)=>{event.preventDefault()}, false)
+    div.addEventListener('click', cb, true)
+
+    function cb(event) {
+        console.log(event.eventPhase)
+
     }
 </script>
 </html>

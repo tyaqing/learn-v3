@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>file reader</title>
+</head>
+<body>
+
+<input id="file" type="file">
+<img id="img" src="" alt="">
+<script>
+    const fileDom  = document.querySelector('#file')
+    const imgDom  = document.querySelector('#img')
+    fileDom.addEventListener('change',function(event){
+        console.log(event.target.files[0])
+        const reader = new FileReader()
+        reader.readAsDataURL(event.target.files[0])
+        reader.onload = function (){
+            imgDom.setAttribute('src',`${reader.result}`)
+        }
+
+        // console.log(reader.result)
+    })
+</script>
+</body>
+</html>

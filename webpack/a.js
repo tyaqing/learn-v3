@@ -1,1 +1,1 @@
-import('./b').then(console.log)
+console.log(1)

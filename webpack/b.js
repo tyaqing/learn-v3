@@ -1,1 +1,1 @@
-export default  'a module'
+console.log(2)

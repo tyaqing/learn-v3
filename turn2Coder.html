@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>turn2Coder</title>
+</head>
+<body>
+<script>
+    /**
+     在给定的网格中，每个单元格可以有以下三个值之一：
+     值 0 代表空单元格；
+     值 1 代表产品经理；
+     值 2 代表程序员；
+     每分钟，任何与程序员（在 4 个正方向上）相邻的产品经理都会变成程序员。
+     返回直到单元格中没有产品经理为止所必须经过的最小分钟数。如果不可能，返回 -1。
+     console.log(turn2Coder([[0,2],[1,0]])); // -1
+     console.log(turn2Coder([[2,1,1],[1,1,0],[0,1,1]])); // 4
+     */
+    function turn2Coder(matrix) {
+        const row = matrix.length, col = matrix[0].length;
+        const queue = [];
+        let count = 0
+        for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+                if (matrix[i][j] === 2) queue.push([i, j])
+            }
+        }
+        while (queue.length) {
+            count++
+            let len = queue.length
+            while (len--) {
+                const [i, j] = queue.pop();
+                learn(matrix, queue, i - 1, j)
+                learn(matrix, queue, i + 1, j)
+                learn(matrix, queue, i, j + 1)
+                learn(matrix, queue, i, j - 1)
+            }
+            if (queue.length > 1000) break
+        }
+        for (let i = 0; i < row; i++) {
+            for (let j = 0; j < col; j++) {
+                if (matrix[i][j] === 1) return -1
+            }
+        }
+        return count
+    }
+    function learn(matrix, queue, i, j) {
+        const row = matrix.length, col = matrix[0].length;
+        if (i >= 0 && i < row && j >= 0 && j < col && matrix[i][j] === 1) {
+            matrix[i][j] = 2
+            queue.push([i, j])
+        }
+    }
+
+    console.log(turn2Coder([[0, 2], [1, 0]])); // -1
+    console.log(turn2Coder([[2, 1, 1], [1, 1, 0], [0, 1, 1]])); // 4
+</script>
+</body>
+</html>

@@ -21,9 +21,7 @@
         const queue = [];
         let count = 0
         for (let i = 0; i < row; i++) {
-            for (let j = 0; j < col; j++) {
-                if (matrix[i][j] === 2) queue.push([i, j])
-            }
+            for (let j = 0; j < col; j++) if (matrix[i][j] === 2) queue.push([i, j])
         }
         while (queue.length) {
             count++
@@ -35,12 +33,9 @@
                 learn(matrix, queue, i, j + 1)
                 learn(matrix, queue, i, j - 1)
             }
-            if (queue.length > 1000) break
         }
         for (let i = 0; i < row; i++) {
-            for (let j = 0; j < col; j++) {
-                if (matrix[i][j] === 1) return -1
-            }
+            for (let j = 0; j < col; j++) if (matrix[i][j] === 1) return -1
         }
         return count
     }

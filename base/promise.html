@@ -5,7 +5,36 @@
     <title>Title</title>
 </head>
 <body>
+<!--<script src="promise.js"></script>-->
+<script>
+    class MyPromise {
+        queue = []
+        constructor(excutor) {
+            excutor(this._resolve.bind(this))
+        }
+        _resolve() {
+            const run = () => {
+                const func = this.queue.shift()
+                func && func()
+            }
+            setTimeout(run, 0)
+        }
+        then(func) {
+            this.queue.push(func)
+            return this
+        }
+    }
 
+    const p = new MyPromise(resolve => {
+        console.log('before')
+        setTimeout(() => {
+            console.log('after')
+            resolve()
+        }, 1000)
+    })
+    p.then(() => {
+        console.log('then')
+    })
+</script>
 </body>
-<script src="promise.js"></script>
 </html>

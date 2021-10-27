@@ -1,4 +1,9 @@
-process.stdin.on('data', function (chunk) {
-    console.log('stream by stdin', chunk)
-    console.log('stream by stdin', chunk.toString())
-})
+const fs = require('fs')
+
+
+const rs = fs.createReadStream('./test.json')
+const ws = fs.createWriteStream('./test2.json')
+
+rs.pipe(process.stdout).pipe(ws)
+
+

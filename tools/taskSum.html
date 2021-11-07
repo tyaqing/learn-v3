@@ -26,7 +26,8 @@
     function taskSum(delay, func) {
         const queue = []
         // 借助函数属性
-        const main = function () {}
+        const main = function () {
+        }
         main.task = function (delay2, func2) {
             const f = () => {
                 setTimeoutWrap(delay2, func2).then(() => {
@@ -43,7 +44,6 @@
             const task = queue.shift()
             task && task();
         }
-
         main.task(delay, func)
         executor()
         return main

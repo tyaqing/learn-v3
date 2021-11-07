@@ -24,20 +24,32 @@
 <script>
 
 
-     function Pet(name) {
-         this.name = name;
+    function Pet(name) {
+        this.name = name;
 
-         this.getName = ()=>{
-             return this.name
-         };
-     }
+        this.getName = () => {
+            console.log(this.name)
+        };
+    }
 
+    const cat = new Pet('Fluffy');
 
-     const cat = new Pet('Fluffy');
+    // console.log(cat.getName()); // What is logged?
+    // console.log(cat)
+    const {getName} = cat;
+    const Dog = {
+        name: 'dog',
+        getName
+    }
+    Dog.getName()
 
-     console.log(cat.getName()); // What is logged?
+    function setWin(){
+        this.bu = 'sldkfajlk'
+    }
+    setWin()
+    console.log(bu)
 
-     const { getName } = cat;
-     console.log(getName());     // What is logged?
+    // console.log(getName());     // What is logged?
+
 </script>
 </html>

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>LazyManClass</title>
 </head>
 <body>
 <script>
@@ -19,7 +19,7 @@
             setTimeout(() => this.executor(), 0)
         }
         eat(name) {
-            const fn  = ()=>{
+            const fn = () => {
                 console.log(`eat ${name}`)
                 this.executor()
             }
@@ -41,6 +41,36 @@
             task && task()
         }
 
+    }
+
+    class LazyManClassV2 {
+        queue = []
+        constructor(name) {
+            console.log(name)
+            setTimeout(() => this.executor())
+        }
+        eat(name) {
+            const run = () => {
+                console.log('name')
+                this.executor()
+            }
+            this.queue.push(run)
+            return this
+        }
+        sleep(delay) {
+            const run = () => {
+                setTimeout(() => {
+                    console.log('delay', delay)
+                    this.executor()
+                }, delay)
+            }
+            this.queue.push(run)
+            return this
+        }
+        executor() {
+            const task = this.queue.pop()
+            task && task()
+        }
     }
 
     function LazyMan(name) {

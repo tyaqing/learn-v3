@@ -16,21 +16,21 @@
     sorted=['1.5','1.45.0','3.3.3.3.3.3','6']
     https://segmentfault.com/a/1190000023485915
     * */
-    const arr = ['1.45.0', '1.5', '6', '3.3.3.3.3.3.3']
+    const arr = ['1.45.0', '1.5', '6','0.2.2', '3.3.3.3.3.3.3']
 
-    arr.sort((version1, version2) => {
+    arr.sort(compareVersion)
+
+    function compareVersion(version1, version2) {
         const v1 = version1.split('.');
         const v2 = version2.split('.');
-        for (let i = 0; i < v1.length || i < v2.length; ++i) {
-            let x = 0, y = 0;
-            if (i < v1.length) x = parseInt(v1[i]);
-            if (i < v2.length) y = parseInt(v2[i]);
-            // 比较, 相等就继续比较
-            if (x > y) return 1;
-            if (x < y) return -1;
+        while (v1.length || v2.length) {
+            const x = +v1.shift() ?? 0
+            const y = +v2.shift() ?? 0
+            if (x > y) return -1
+            if (y > x) return 1
         }
-        return 0;
-    })
+        return 0
+    }
     console.log(arr)
 
 

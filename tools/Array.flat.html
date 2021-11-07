@@ -16,6 +16,14 @@
             return prev.concat(typeof curr === 'object' ? flat(curr, depth - 1) : curr)
         }, [])
     }
+
+    function flatV2(arr, depth = 1) {
+        if (!depth) return arr
+        return arr.reduce((prev, curr) => {
+            return prev.concat(Array.isArray(curr) ? flat(curr, depth - 1) : curr)
+        }, [])
+    }
+
     const testArr = [1, [2, [3, [4]]], 5, [6]]
     console.log(flat(testArr, 1))
 </script>

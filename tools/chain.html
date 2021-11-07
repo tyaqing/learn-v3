@@ -26,8 +26,22 @@
         return main
     }
 
+
+    function sumV2(...num) {
+        const stack = []
+        stack.push(...num)
+        function main(...nums) {
+            stack.push(...nums)
+            return main
+        }
+        main.valueOf = function () {
+            return stack.reduce((prev, curr) => prev + curr, 0)
+        }
+        return main
+    }
+
     const sum1 = sum(1)
-    console.log(sum1(2,3)(4).valueOf())
+    console.log(sum1(2, 3)(4).valueOf())
 
 
     console.log(sum(1)(2)(3).valueOf())

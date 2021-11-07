@@ -39,6 +39,36 @@
 
     }
 
+    class SchedulerV2 {
+        queue = []
+        run = []
+        concurrentCount
+        constructor(concurrentCount = 2) {
+            this.concurrentCount = concurrentCount
+        }
+        add(task) {
+            this.queue.push(task)
+            return this.executor()
+        }
+        executor() {
+            if (this.queue.length && this.run.length >= this.concurrentCount) {
+                const task = this.queue.pop()
+                const promise = () => {
+                    return task.then(() => {
+                        // 执行完后在run中删掉任务
+                        this.queue.splice(this.queue.indexOf(promise), 1)
+                    })
+                }
+                this.run.push(promise)
+                return promise
+            } else {
+                // 如果任务满了,就等其中最快的任务执行完
+                return Promise.race(this.run).then(() => this.executor())
+            }
+        }
+    }
+
+
     const timeout = (time) => new Promise(resolve => {
         setTimeout(resolve, time)
     })
@@ -54,6 +84,13 @@
     }
     for (let i = 0; i < 10; i++) {
         addTask(random(), i)
+    }
+
+
+    function a() {
+        return new Promise(resolve => {
+            setTimeout(resolve, 10000)
+        })
     }
 
 

@@ -84,8 +84,21 @@
         return res;
     }
 
+    function buildTree(list) {
+        const kv = {}
+        // kv化
+        list.forEach(item => kv[item.id] = item)
+
+        const res = []
+        for (const item of list) {
+            if (item.parent_id === '0') res.push(item)
+            else (kv[item.parent_id].children || (kv[item.parent_id].children = [])).push(item)
+        }
+        return res
+    }
 
 
+    console.log(buildTree(menu_list))
 
     console.log(toTree(menu_list))
 

@@ -14,6 +14,14 @@
         return typeof res === 'object' ? res : obj
     }
 
+    function newV3(constructor, ...arg) {
+        const obj = {}
+        obj.__proto__ = constructor.prototype
+        const result = constructor.call(obj, ...arg)
+        return typeof result === 'object' ? result : obj
+
+    }
+
     function Person(name, age) {
         this.age = age
         this.name = name

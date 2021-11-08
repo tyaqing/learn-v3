@@ -13,7 +13,20 @@
             // 如果new了R,就用this作为上下文
             return self.call(this instanceof R ? this : obj, ...arg1.concat(arg2))
         }
-        const F = function (){}
+        const F = function () {
+        }
+        F.prototype = this.prototype
+        R.prototype = new F()
+        return R
+    }
+
+    Function.prototype.bindV2 = function (obj, ...arg) {
+        const self = this
+        function R(..._arg) {
+            return self.call(this instanceof R ? this : obj, ...arg.concat(_arg))
+        }
+        const F = function () {
+        }
         F.prototype = this.prototype
         R.prototype = new F()
         return R
@@ -47,10 +60,12 @@
         console.log(this)
         return 'heihei'
     }
-    bar.prototype.barFunc = ()=>{}
+    bar.prototype.barFunc = () => {
+    }
 
     const bindBar = bar.bind2(obj, 'obo')
-    bindBar.prototype.bindBarFunc = ()=>{}
+    bindBar.prototype.bindBarFunc = () => {
+    }
     let p = new bindBar(18)
     console.log(p)
 </script>

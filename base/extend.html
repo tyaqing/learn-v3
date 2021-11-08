@@ -31,6 +31,14 @@
         Child.prototype.constructor = Parent
     }
 
+    function extendsV2(Child, Parent) {
+        function F(){}
+        F.prototype = Parent.prototype
+        Child.prototype = new F()
+        Child.prototype.constructor = Parent
+    }
+
+
     extend(Boy, Person);
     const p = new Boy('smith', 18)
     console.log(p)

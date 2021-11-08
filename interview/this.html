@@ -22,22 +22,30 @@
 </ul>
 </body>
 <script>
-    function Person (name) {
-        this.name = name
-        this.foo1 = function () {
+
+
+    function Pet(name) {
+        this.name = name;
+
+        this.getName = () => {
             console.log(this.name)
-        }
-        this.foo2 = function () {
-            return  ()=> {
-                console.log(this.name)
-            }
-        }
+        };
     }
-    var person1 = new Person('person1')
-    person1.foo1()
-    person1.foo2()()
+
+    const cat = new Pet('Fluffy');
+
+    // console.log(cat.getName()); // What is logged?
+    // console.log(cat)
+    const {getName} = cat;
+    const Dog = {
+        name: 'dog',
+        getName
+    }
+    Dog.getName()
 
 
+
+    // console.log(getName());     // What is logged?
 
 </script>
 </html>

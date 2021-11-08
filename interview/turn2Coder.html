@@ -20,32 +20,38 @@
         const row = matrix.length, col = matrix[0].length;
         const queue = [];
         let count = 0
+        // 先找到所有程序员
         for (let i = 0; i < row; i++) {
-            for (let j = 0; j < col; j++) if (matrix[i][j] === 2) queue.push([i, j])
+            for (let j = 0; j < col; j++)
+                if (matrix[i][j] === 2) queue.push([i, j])
         }
+        // 学的函数
+        function learn(queue, i, j) {
+            const row = matrix.length, col = matrix[0].length;
+            if (i >= 0 && i < row && j >= 0 && j < col && matrix[i][j] === 1) {
+                matrix[i][j] = 2
+                queue.push([i, j])
+            }
+        }
+        // 遍历所有程序员
         while (queue.length) {
             count++
             let len = queue.length
             while (len--) {
                 const [i, j] = queue.pop();
-                learn(matrix, queue, i - 1, j)
-                learn(matrix, queue, i + 1, j)
-                learn(matrix, queue, i, j + 1)
-                learn(matrix, queue, i, j - 1)
+                learn(queue, i - 1, j)
+                learn(queue, i + 1, j)
+                learn(queue, i, j + 1)
+                learn(queue, i, j - 1)
             }
         }
+        // 检查是否还有剩余产品经理
         for (let i = 0; i < row; i++) {
             for (let j = 0; j < col; j++) if (matrix[i][j] === 1) return -1
         }
         return count
     }
-    function learn(matrix, queue, i, j) {
-        const row = matrix.length, col = matrix[0].length;
-        if (i >= 0 && i < row && j >= 0 && j < col && matrix[i][j] === 1) {
-            matrix[i][j] = 2
-            queue.push([i, j])
-        }
-    }
+
 
     console.log(turn2Coder([[0, 2], [1, 0]])); // -1
     console.log(turn2Coder([[2, 1, 1], [1, 1, 0], [0, 1, 1]])); // 4

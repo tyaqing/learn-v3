@@ -1,6 +1,6 @@
 let net = require('net')
 
-// let server = net.createServer((socket) => {
+// let server = tcp.createServer((socket) => {
 //     socket.on('data', data => {
 //         console.log('我收到了:'+data)
 //     })

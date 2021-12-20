@@ -1,0 +1,12 @@
+syntax = "proto2";
+package transferData;
+
+message transferMessage {
+  required string name = 1;
+  required int32 age = 2;
+  enum SexEnum {
+    Boy = 0;
+    Girl = 1;
+  }
+  optional SexEnum sexEnum = 3;
+}

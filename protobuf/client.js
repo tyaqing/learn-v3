@@ -2,14 +2,15 @@ const net = require('net');
 const protobuf = require('protobufjs');
 
 const data = {
-    name: '狍狍',
+    name: '跑了了可是大姐凡',
     age: 1,
     sexEnum: 0
 };
 
 let client = new net.Socket();
 client.connect({
-    port: 8081
+    host: '101.43.20.68',
+    port: 3344
 });
 
 client.on('connect', () => {
@@ -17,20 +18,30 @@ client.on('connect', () => {
 });
 
 client.on('data', data => {
-    console.log(data);
+    console.log('receive', data.toString());
     client.end();
 });
 
+
+const decodeData = async data => {
+   const root = await protobuf.load(__dirname + '/transfer.proto')
+    const transferMessage = root.lookupType('transferData.transferMessage');
+    // transferMessage { name: '狍狍', age: 1, sexEnum: 1 }
+    // console.log(result);
+    return transferMessage.decode(data)
+}
+
+
 function setMessage(data) {
     protobuf.load(__dirname + '/transfer.proto')
-        .then(root =>{
+        .then(root => {
             // 根据proto文件中的内容对message进行实例化
             const transferMessage = root.lookupType('transferData.transferMessage');
 
             // 验证
             const errMsg = transferMessage.verify(data);
-            console.log('errMsg', errMsg);
             if (errMsg) {
+                console.log('errMsg', errMsg);
                 throw new Error(errMsg);
             }
 

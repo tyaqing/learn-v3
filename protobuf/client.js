@@ -1,20 +1,22 @@
 const net = require('net');
-const protobuf = require('protobufjs');
-
+const {encodeData} = require('./lib')
 const data = {
     name: '跑了了可是大姐凡',
     age: 1,
     sexEnum: 0
 };
 
+const devCloudHost = '9.134.188.69'
+const cvmHost = '101.43.20.68'
+
 let client = new net.Socket();
 client.connect({
-    host: '101.43.20.68',
+    host: devCloudHost,
     port: 3344
 });
 
-client.on('connect', () => {
-    setMessage(data);
+client.on('connect', async () => {
+    await setMessage(data);
 });
 
 client.on('data', data => {
@@ -23,38 +25,8 @@ client.on('data', data => {
 });
 
 
-const decodeData = async data => {
-   const root = await protobuf.load(__dirname + '/transfer.proto')
-    const transferMessage = root.lookupType('transferData.transferMessage');
-    // transferMessage { name: '狍狍', age: 1, sexEnum: 1 }
-    // console.log(result);
-    return transferMessage.decode(data)
-}
-
-
-function setMessage(data) {
-    protobuf.load(__dirname + '/transfer.proto')
-        .then(root => {
-            // 根据proto文件中的内容对message进行实例化
-            const transferMessage = root.lookupType('transferData.transferMessage');
-
-            // 验证
-            const errMsg = transferMessage.verify(data);
-            if (errMsg) {
-                console.log('errMsg', errMsg);
-                throw new Error(errMsg);
-            }
-
-            // 转换为message实例
-            const messageFromObj = transferMessage.fromObject(data);
-            console.log('messageFromObj', messageFromObj);
-
-            // 编码
-            const buffer = transferMessage.encode(messageFromObj).finish();
-            console.log(buffer);
-
-            // 发送
-            client.write(buffer);
-        })
-        .catch(console.log);
+async function setMessage(data) {
+    const buffer = await encodeData(data)
+    // 发送
+    client.write(buffer);
 }

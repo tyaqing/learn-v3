@@ -1,12 +1,14 @@
-syntax = "proto2";
+syntax = "proto3";
 package transferData;
 
+enum SexEnum {
+  Boy = 0;
+  Girl = 1;
+}
+
 message transferMessage {
-  required string name = 1;
-  required int32 age = 2;
-  enum SexEnum {
-    Boy = 0;
-    Girl = 1;
-  }
+  // proto3移除了required
+  string name = 1;
+  int32 age = 2;
   optional SexEnum sexEnum = 3;
 }

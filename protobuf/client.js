@@ -11,7 +11,7 @@ const cvmHost = '101.43.20.68'
 
 let client = new net.Socket();
 client.connect({
-    host: devCloudHost,
+    host: cvmHost,
     port: 3344
 });
 

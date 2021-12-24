@@ -1,0 +1,38 @@
+syntax = "proto3";
+import 'google/protobuf/wrappers.proto';
+
+package cms;
+service BlogService {
+  rpc GetBlog (BlogRequest) returns (BlogResponse) {}
+}
+// 文章类型
+enum Type {
+  ORIGINAL = 0; // 原创
+  RESHIP = 1; // 转载
+}
+//电话类型
+enum PhoneType {
+  MOBILE = 0; //手机
+  HOME = 1; //工作座机
+}
+
+message PhoneNumber{
+  string number = 1;
+  optional PhoneType type = 2;
+}
+
+message Person {
+  string name = 1;
+  repeated PhoneNumber phones = 2;
+}
+
+message BlogResponse {
+  string id = 1;
+  string title  = 2;
+  int32 view = 3;
+  Person author = 10;
+}
+
+message BlogRequest {
+  string id = 1;
+}

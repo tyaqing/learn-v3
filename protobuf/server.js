@@ -1,13 +1,15 @@
 const net = require('net');
 const os = require('os');
-const {decodeData} = require('./lib')
+const {decodeData,encodeData} = require('./lib')
 
 const server = net.createServer(socket => {
     socket.on('data', async data => {
-        console.log('data来了')
         const result = await decodeData(data);
-        console.log(result)
-        socket.write('server:我收到了')
+        console.log('result',result)
+
+        socket.write(await encodeData({
+            id:result.id+1
+        }))
     });
 
     socket.on('close', () => {
@@ -20,5 +22,5 @@ server.on('error', err => {
 });
 
 server.listen(3344, () => {
-    console.log('server port is 3344', os.version());
+    console.log('server port is 3344', os.version&&os.version());
 });

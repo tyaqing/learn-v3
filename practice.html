@@ -14,53 +14,19 @@
     </style>
 </head>
 <body>
-<ul>
-    <li>hello 1</li>
-    <li>hello 2</li>
-    <li>hello 3</li>
-    <li>hello 4</li>
-</ul>
 </body>
 <script>
-    //
-    // function combine(list) {
-    //     const ans = [], path = [], used = Array(list.length).fill(false);
-    //     function dfs(depth) {
-    //         if (depth === 3) {
-    //             ans.push(path.slice())
-    //             return
-    //         }
-    //         for (let i = depth; i < list.length; i++) {
-    //             if (used[i]) continue
-    //             path.push(list[i])
-    //             used[i] = true
-    //             dfs(depth + 1)
-    //             path.pop()
-    //             used[i] = false
-    //         }
-    //     }
-    //     dfs(0)
-    //     return ans
-    // }
-    // const list = [1, 2, 3, 4, 5]
-    // console.log(combine(list))
+  var data = [];
 
+  for (let i =0 ; i < 3; i++) {
+    data[i] = function () {
+      // 这使用了全局的AO，因此都是同一个i
+      console.log(i);
+    };
+  }
 
-    function test(a, b) {
-        console.log(b)
-        return {
-            test: function (c) {
-                return test(c, a);
-            }
-        };
-    }
-    // var retA = test(0);//0
-    // retA.test(2);//2
-    // retA.test(4);//4
-    // retA.test(8);//8
-    // var retB = test(0).test(2).test(4).test(8);
-    // var retC = test('good').test('bad');
-    // retC.test('good');
-    // retC.test('bad');
+  data[0]();
+  data[1]();
+  data[2]();
 </script>
 </html>

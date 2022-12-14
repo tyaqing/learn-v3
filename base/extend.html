@@ -10,35 +10,28 @@
     function Person(name) {
         this.name = name
     }
-
     Person.prototype.sayName = function () {
         console.log(this.name)
     }
-
     function Boy(name, age) {
         // 相当于super,执行一下父级的函数
         Person.call(this, name)
         this.age = age
     }
-
     function extend(Child, Parent) {
         // 如果需要传参需要子构造函数实现super
         function F() {
         }
-
         F.prototype = Parent.prototype;
         Child.prototype = new F();
         Child.prototype.constructor = Parent
     }
-
     function extendsV2(Child, Parent) {
         function F(){}
         F.prototype = Parent.prototype
         Child.prototype = new F()
         Child.prototype.constructor = Parent
     }
-
-
     extend(Boy, Person);
     const p = new Boy('smith', 18)
     console.log(p)

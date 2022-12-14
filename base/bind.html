@@ -11,15 +11,19 @@
 
   Function.prototype.bindV2 = function (context, ...arg) {
     const self = this
-    function R(..._arg) {
-      // 组合一下参数
-      return self.call(this instanceof R ? this : context, ...arg.concat(_arg))
+    function fBound(..._arg) {
+      // 作为构造函数时，this指向实例
+      // 作为普通函数时，this指向context
+      return self.call(this instanceof fBound ? this : context, ...arg.concat(_arg))
     }
-    // const F = function () {
-    // }
-    // F.prototype = this.prototype
-    // R.prototype = new F()
-    return R
+    // 这样可以直接将原来构造函数的原型方法放入fBound，缺点是可能会有重名，因此需要中转
+    // fBound.prototype = this.prototype
+    fBound.prototype = Object.create(this.prototype)
+    // Object.create实现代码如下
+    // function f(){}
+    // f.prototype = o;
+    // return new f;
+    return fBound
   }
 
   const obj = {

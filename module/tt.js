@@ -1,2 +1,2 @@
-import {  incCounter } from './test.js';
+import {  incCounter } from './test2.js';
 incCounter()

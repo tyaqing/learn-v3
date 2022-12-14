@@ -1,5 +1,5 @@
-import { counter, incCounter } from './test.js';
-import * as test from './test.js';
+import { counter, incCounter } from './test2.js';
+import * as test from './test2.js';
 import './tt.js'
 console.log(counter); // 3
 incCounter();

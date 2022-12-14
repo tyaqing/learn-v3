@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bind and call</title>
+</head>
+<body>
+
+<script>
+
+
+  Function.prototype.bindV2 = function (context, ...arg) {
+    const self = this
+    function R(..._arg) {
+      // 组合一下参数
+      return self.call(this instanceof R ? this : context, ...arg.concat(_arg))
+    }
+    // const F = function () {
+    // }
+    // F.prototype = this.prototype
+    // R.prototype = new F()
+    return R
+  }
+
+  const obj = {
+    name: 'bob'
+  }
+
+  function printMe(age) {
+    this.age = age
+    console.log(this)
+  }
+
+  printMe.call(obj, 18)
+
+  function bar(name, age) {
+    this.name = name
+    this.age = age
+    console.log(this)
+    return 'heihei'
+  }
+
+  bar.prototype.barFunc = () => {
+  }
+
+  const bindBar = bar.bindV2(obj, 'obo')
+  bindBar.prototype.bindBarFunc = () => {
+  }
+  let p = new bindBar(18)
+  console.log(p,p.barFunc)
+</script>
+
+</body>
+</html>

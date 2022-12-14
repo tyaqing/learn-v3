@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bind and call</title>
+</head>
+<body>
+
+<script>
+
+
+  Function.prototype.call2 = function (ctx, ...arg) {
+    // this 参数可以传 null，当为 null 的时候，视为指向 window
+    ctx = ctx || window
+    // 追加对象
+    ctx.__func = this;
+    // 处理返回
+    const res = ctx.__func(...arg)
+    // 删除临时对象
+    delete ctx.__func
+    return res;
+  }
+
+
+  const obj = {
+    name: 'bob'
+  }
+
+  function printMe(age) {
+    this.age = age
+    console.log(this)
+  }
+
+  printMe.call2(obj, 18)
+</script>
+
+</body>
+</html>

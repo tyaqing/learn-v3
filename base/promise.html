@@ -3,38 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script src="promise.js"></script>
 </head>
 <body>
 <!--<script src="promise.js"></script>-->
 <script>
-    class MyPromise {
-        queue = []
-        constructor(excutor) {
-            excutor(this._resolve.bind(this))
+    class MyPromise{
+      queue = []
+      constructor(executor) {
+        // 这里绑定this是因为直接传递this._resolve相当于赋值，会解开this的绑定
+        return executor(this._resolve.bind(this))
+      }
+      _resolve(res){
+        const run  = ()=>{
+          const  func = this.queue.shift()
+          func && func(res)
         }
-        _resolve() {
-            const run = () => {
-                const func = this.queue.shift()
-                func && func()
-            }
-            setTimeout(run, 0)
-        }
-        then(func) {
-            this.queue.push(func)
-            return this
-        }
+        setTimeout(run)
+      }
+      then(cb){
+        this.queue.push(cb)
+      }
     }
 
     const p = new MyPromise(resolve => {
         console.log('before')
         setTimeout(() => {
             console.log('after')
-            resolve()
+            resolve('foo')
         }, 1000)
     })
-    p.then(() => {
-        console.log('then')
+    p.then((res) => {
+        console.log('then',res)
     })
 </script>
 </body>

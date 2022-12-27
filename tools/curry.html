@@ -8,34 +8,34 @@
 
 </body>
 <script>
-    // 本质上是降低通用性，提高适用性。
+  // 本质上是降低通用性，提高适用性。
 
-    function add(a, b, c, d) {
-        return a + b + c + d
+  function add(a, b, c, d) {
+    return a + b + c + d
+  }
+
+  function curry(func, ...args1) {
+    // 获取函数参数个数
+    const argLength = func.length
+    return function (...args2) {
+      const combine = args1.concat(args2)
+      // 这里继续绑定this是在回调函数里面仍然可以获取到对象的this
+      if (combine.length < argLength) return curry.call(this, func, ...combine)
+      else return func.call(this, ...combine)
     }
+  }
 
-
-    function curry(func, ...args1) {
-        // 获取函数参数个数
-        const argLength = func.length
-        return function (...args2) {
-            const combine = args1.concat(args2)
-            if (combine.length < argLength) return curry.call(this, func, ...combine)
-            else return func.call(this, ...combine)
-        }
+  function curryV2(func, ...arg) {
+    const argLength = func.length;
+    return function (...extArg){
+      const combine  = arg.concat(extArg)
+      if (combine.length < argLength) return curryV2.call(this,func, ...combine)
+      else return func.call(this, ...combine)
     }
+  }
 
-    function curryV2(func, ...arg) {
-        const argLength = func.length
-        return function (..._arg) {
-            const combineArg = arg.concat(_arg)
-            if (combineArg.length < argLength) return curry.call(this, func, ...combineArg)
-            else return func.call(this, ...combineArg)
-        }
-    }
-
-    const curryAdd = curry(add, 1, 2)
-    console.log(curryAdd(3)(4))
+  const curryAdd = curryV2(add, 1, 2)
+  console.log(curryAdd(3)(4))
 
 </script>
 </html>

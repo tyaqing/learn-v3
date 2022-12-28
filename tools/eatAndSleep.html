@@ -6,77 +6,89 @@
 </head>
 <body>
 <script>
-    /*
-    7、const chain=new Chain();
-  chain.eat().sleep(5).eat().sleep(6).eat().work()
-  输出结果是:
-  eat->sleep(5)->eat->sleep(6)->eat-work
-    * */
-    class LazyManClass {
-        queue = []
-        constructor(name) {
-            console.log(name)
-            setTimeout(() => this.executor(), 0)
-        }
-        eat(name) {
-            const fn = () => {
-                console.log(`eat ${name}`)
-                this.executor()
-            }
-            this.queue.push(fn)
-            return this
-        }
-        sleep(delay) {
-            const fn = () => {
-                setTimeout(() => {
-                    console.log(`sleep ${delay}`)
-                    this.executor()
-                }, delay)
-            }
-            this.queue.push(fn)
-            return this
-        }
-        executor() {
-            const task = this.queue.shift()
-            task && task()
-        }
+  /*
+  7、const chain=new Chain();
+chain.eat().sleep(5).eat().sleep(6).eat().work()
+输出结果是:
+eat->sleep(5)->eat->sleep(6)->eat-work
+  * */
+  class LazyManClass {
+    queue = []
 
+    constructor(name) {
+      console.log(name)
+      setTimeout(() => this.executor(), 0)
     }
 
-    class LazyManClassV2 {
-        queue = []
-        constructor(name) {
-            console.log(name)
-            setTimeout(() => this.executor())
-        }
-        eat(name) {
-            const run = () => {
-                console.log('name')
-                this.executor()
-            }
-            this.queue.push(run)
-            return this
-        }
-        sleep(delay) {
-            const run = () => {
-                setTimeout(() => {
-                    console.log('delay', delay)
-                    this.executor()
-                }, delay)
-            }
-            this.queue.push(run)
-            return this
-        }
-        executor() {
-            const task = this.queue.pop()
-            task && task()
-        }
+    eat(name) {
+      const fn = () => {
+        console.log(`eat ${name}`)
+        // 执行下一个任务
+        this.executor()
+      }
+      this.queue.push(fn)
+      return this
     }
 
-    function LazyMan(name) {
-        return new LazyManClass(name)
+    sleep(delay) {
+      const fn = () => {
+        setTimeout(() => {
+          console.log(`sleep ${delay}`)
+          this.executor()
+        }, delay)
+      }
+      this.queue.push(fn)
+      return this
     }
-    LazyMan('tony').eat('lunch').sleep(2000).eat('dinner')
+
+    executor() {
+      const task = this.queue.shift()
+      task && task()
+    }
+
+  }
+
+  class LazyManClassV2 {
+    queue = []
+
+    constructor(name) {
+      console.log('my name is ', name)
+      setTimeout(()=>{
+        this.executor()
+      })
+    }
+
+    eat(food) {
+      const task = ()=>{
+        console.log('eat ',food)
+        this.executor()
+      }
+      this.queue.push(task)
+      return this
+    }
+
+    sleep(delay) {
+      const task = ()=>{
+        console.log('sleep ',delay)
+        setTimeout(()=>{
+          this.executor()
+        },delay)
+      }
+      this.queue.push(task)
+      return this
+    }
+
+    executor() {
+      const task = this.queue.shift()
+      task && task()
+    }
+  }
+
+  function LazyMan(name) {
+    return new LazyManClassV2(name)
+  }
+
+  LazyMan('tony').eat('lunch').sleep(2000).eat('dinner')
 </script>
 </body>
 </html>

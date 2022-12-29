@@ -7,100 +7,114 @@
 <body>
 
 <script>
-    // 通过 parentId 属性来将一个数组构造成有层级关系的树,类似于comment
-    // 输入
-    const menu_list = [{
-        id: '1',
-        menu_name: '设置',
-        menu_url: 'setting',
-        parent_id: '0'
-    }, {
-        id: '1-1',
-        menu_name: '权限设置',
-        menu_url: 'setting.permission',
-        parent_id: '1'
-    }, {
-        id: '1-1-1',
-        menu_name: '用户管理列表',
-        menu_url: 'setting.permission.user_list',
-        parent_id: '1-1'
-    }, {
-        id: '1-1-2',
-        menu_name: '用户管理新增',
-        menu_url: 'setting.permission.user_add',
-        parent_id: '1-1'
-    }, {
-        id: '1-1-3',
-        menu_name: '角色管理列表',
-        menu_url: 'setting.permission.role_list',
-        parent_id: '1-1'
-    }, {
-        id: '1-2',
-        menu_name: '菜单设置',
-        menu_url: 'setting.menu',
-        parent_id: '1'
-    }, {
-        id: '1-2-1',
-        menu_name: '菜单列表',
-        menu_url: 'setting.menu.menu_list',
-        parent_id: '1-2'
-    }, {
-        id: '1-2-2',
-        menu_name: '菜单添加',
-        menu_url: 'setting.menu.menu_add',
-        parent_id: '1-2'
-    }, {
-        id: '2',
-        menu_name: '订单',
-        menu_url: 'order',
-        parent_id: '0'
-    }, {
-        id: '2-1',
-        menu_name: '报单审核',
-        menu_url: 'order.orderreview',
-        parent_id: '2'
-    }, {
-        id: '2-2',
-        menu_name: '退款管理',
-        menu_url: 'order.refundmanagement',
-        parent_id: '2'
-    }]
+  // 通过 parentId 属性来将一个数组构造成有层级关系的树,类似于comment
+  // 输入
+  const menu_list = [{
+    id: '1',
+    menu_name: '设置',
+    menu_url: 'setting',
+    parent_id: '0'
+  }, {
+    id: '1-1',
+    menu_name: '权限设置',
+    menu_url: 'setting.permission',
+    parent_id: '1'
+  }, {
+    id: '1-1-1',
+    menu_name: '用户管理列表',
+    menu_url: 'setting.permission.user_list',
+    parent_id: '1-1'
+  }, {
+    id: '1-1-2',
+    menu_name: '用户管理新增',
+    menu_url: 'setting.permission.user_add',
+    parent_id: '1-1'
+  }, {
+    id: '1-1-3',
+    menu_name: '角色管理列表',
+    menu_url: 'setting.permission.role_list',
+    parent_id: '1-1'
+  }, {
+    id: '1-2',
+    menu_name: '菜单设置',
+    menu_url: 'setting.menu',
+    parent_id: '1'
+  }, {
+    id: '1-2-1',
+    menu_name: '菜单列表',
+    menu_url: 'setting.menu.menu_list',
+    parent_id: '1-2'
+  }, {
+    id: '1-2-1-1',
+    menu_name: '菜单列表 chi',
+    menu_url: 'setting.menu.menu_list.chi',
+    parent_id: '1-2-1'
+  }, {
+    id: '1-2-1-2',
+    menu_name: '菜单列表 chi2',
+    menu_url: 'setting.menu.menu_list.chi2',
+    parent_id: '1-2-1'
+  }, {
+    id: '1-2-1-2-1',
+    menu_name: '菜单列表 chi3',
+    menu_url: 'setting.menu.menu_list.chi2',
+    parent_id: '1-2-1-2'
+  }, {
+    id: '1-2-2',
+    menu_name: '菜单添加',
+    menu_url: 'setting.menu.menu_add',
+    parent_id: '1-2'
+  }, {
+    id: '2',
+    menu_name: '订单',
+    menu_url: 'order',
+    parent_id: '0'
+  }, {
+    id: '2-1',
+    menu_name: '报单审核',
+    menu_url: 'order.orderreview',
+    parent_id: '2'
+  }, {
+    id: '2-2',
+    menu_name: '退款管理',
+    menu_url: 'order.refundmanagement',
+    parent_id: '2'
+  }]
 
 
-    function toTree(data) {
-        // 将数据存储为 以 id 为 KEY 的 map 索引数据列
-        const map = {};
-        data.forEach(item => map[item.id] = item);
+  function toTree(data) {
+    // 将数据存储为 以 id 为 KEY 的 map 索引数据列
+    const map = {};
+    data.forEach(item => map[item.id] = item);
 
-        const res = [];
-        data.forEach((item) => {
-            // 以当前遍历项，的pid,去map对象中找到索引的id
-            const parent = map[item.parent_id];
-            // 好绕啊，如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
-            if (parent) (parent.children || (parent.children = [])).push(item);
-            //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
-            else res.push(item);
-        });
-        return res;
+    const res = [];
+    data.forEach((item) => {
+      // 以当前遍历项，的pid,去map对象中找到索引的id
+      const parent = map[item.parent_id];
+      // 如果找到索引，那么说明此项不在顶级当中,那么需要把此项添加到，他对应的父级中
+      if (parent) (parent.children || (parent.children = [])).push(item);
+      //如果没有在map中找到对应的索引ID,那么直接把 当前的item添加到 val结果集中，作为顶级
+      else res.push(item);
+    });
+    return res;
+  }
+
+  function toTreeV2(list) {
+    const kv = {}
+    const res = []
+    list.forEach(item => kv[item.id] = item)
+    for (const item of list) {
+      const parent = kv[item.parent_id]
+      if (parent) {
+        (parent.children || (parent.children = [])).push(item)
+      } else {
+        res.push(item)
+      }
     }
+    return res
+  }
 
-    function buildTree(list) {
-        const kv = {}
-        // kv化
-        list.forEach(item => kv[item.id] = item)
-
-        const res = []
-        for (const item of list) {
-            if (item.parent_id === '0') res.push(item)
-            else (kv[item.parent_id].children || (kv[item.parent_id].children = [])).push(item)
-        }
-        return res
-    }
-
-
-    console.log(buildTree(menu_list))
-
-    console.log(toTree(menu_list))
+  console.log(toTreeV2(menu_list))
 
 
 </script>

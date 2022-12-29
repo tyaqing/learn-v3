@@ -16,17 +16,15 @@
 <body>
 </body>
 <script>
-  var data = [];
+    const p = Promise.resolve().then(()=>{
+      console.log('1??')
+    })
+    const p2 = p.then(()=>{
+      console.log('p t')
+    })
 
-  for (let i =0 ; i < 3; i++) {
-    data[i] = function () {
-      // 这使用了全局的AO，因此都是同一个i
-      console.log(i);
-    };
-  }
-
-  data[0]();
-  data[1]();
-  data[2]();
+    p2.then(()=>{
+      console.log('3')
+    })
 </script>
 </html>

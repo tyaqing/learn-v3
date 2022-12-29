@@ -33,7 +33,29 @@
 
     }
 
-    const eventBus = new eventEmitter()
+
+    class eventEmitterV2{
+      hub = {}
+      on(name,cb){
+        if (this.hub[name]){
+          this.hub[name].push(cb)
+        }else{
+          this.hub[name] = [cb]
+        }
+
+      }
+      emit(name,msg){
+        for (const cb of this.hub[name]){
+          cb(msg)
+        }
+      }
+      off(name,cb){
+        const index = this.hub?.[name].indexOf(cb)
+        if (index!==-1) this.hub[name].splice(index,1)
+      }
+    }
+
+    const eventBus = new eventEmitterV2()
     eventBus.on('first', (data) => {
         console.log('收到first信息1', data)
     })

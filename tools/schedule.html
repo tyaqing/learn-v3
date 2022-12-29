@@ -5,104 +5,105 @@
     <title>schedule</title>
 </head>
 <body>
-
+<button id="btn">add task</button>
 </body>
 <script>
-    // JS实现一个带并发限制的异步调度器Scheduler，
-    // 保证同时运行的任务最多有两个。
-    // 完善代码中Scheduler类，
-    // 使得以下程序能正确输出
+  // JS实现一个带并发限制的异步调度器Scheduler，
+  // 保证同时运行的任务最多有两个。
+  // 完善代码中Scheduler类，
+  // 使得以下程序能正确输出
 
-    class Scheduler {
-        queue = []
-        run = []
-        parallelCount = 2
-        add(fn) {
-            this.queue.push(fn)
-            return this.executor()
-        }
-        executor() {
-            // 判断并发情况
-            if (this.queue.length && this.run.length < this.parallelCount) {
-                const task = this.queue.shift()
-                const promise = () => {
-                    return task.then(() => {
-                        this.queue.splice(this.queue.indexOf(promise), 1)
-                    })
-                }
-                this.run.push(promise)
-                return promise
-            } else {
-                return Promise.race(this.run).then(() => this.executor())
-            }
-        }
-
+  class Scheduler {
+    constructor(count) {
+      this.count = 2
+      this.queue = []
+      this.run = []
     }
 
-    class SchedulerV2 {
-        queue = []
-        run = []
-        concurrentCount
-        constructor(concurrentCount = 2) {
-            this.concurrentCount = concurrentCount
-        }
-        add(task) {
-            this.queue.push(task)
-            return this.executor()
-        }
-        executor() {
-            if (this.queue.length && this.run.length >= this.concurrentCount) {
-                const task = this.queue.pop()
-                const promise = () => {
-                    return task.then(() => {
-                        // 执行完后在run中删掉任务
-                        this.queue.splice(this.queue.indexOf(promise), 1)
-                    })
-                }
-                this.run.push(promise)
-                return promise
-            } else {
-                // 如果任务满了,就等其中最快的任务执行完
-                return Promise.race(this.run).then(() => this.executor())
-            }
-        }
+    add(task) {
+      this.queue.push(task)
+      return this.schedule()
     }
 
-
-    const timeout = (time) => new Promise(resolve => {
-        setTimeout(resolve, time)
-    })
-
-
-    const scheduler = new Scheduler()
-    const addTask = (time, order) => {
-        scheduler.add(() => timeout(time)).then(() => console.log(order))
-    }
-
-    const random = () => {
-        return Math.floor(Math.random() * 1000)
-    }
-    for (let i = 0; i < 10; i++) {
-        addTask(random(), i)
-    }
-
-
-    function a() {
-        return new Promise(resolve => {
-            setTimeout(resolve, 10000)
+    schedule() {
+      if (this.run.length < this.count) {
+        const task = this.queue.shift()
+        // 这里相当于再订阅了了一次then
+        const promise = task().then(() => {
+          // 执行完后把自己去掉
+          this.run.splice(this.run.indexOf(promise), 1)
         })
+        this.run.push(promise)
+        return promise
+      } else {
+        // 异步递归消费
+        return Promise.race(this.run).then(() => this.schedule())
+      }
+    }
+  }
+
+
+  class SchedulerV2 {
+    queue = []
+    inProgressQueue = []
+    concurrencyTotal = 2
+    add(task) {
+      this.queue.push(task)
+      return this._executor()
     }
 
+    _executor() {
+      if (this.inProgressQueue.length < this.concurrencyTotal) {
+        const task = this.queue.shift()
+        // 这里相当于
+        const promise = task().then(() => {
+          this.inProgressQueue.splice(this.inProgressQueue.indexOf(promise), 1)
+        })
+        this.inProgressQueue.push(promise)
+        return promise
+      } else {
+        // 排队等待入队
+        return Promise.race(this.inProgressQueue).then(() => this._executor())
+      }
+    }
 
-    // output: 2 3 1 4
+  }
 
-    // 一开始，1、2两个任务进入队列
-    // 500ms时，2完成，输出2，任务3进队
-    // 800ms时，3完成，输出3，任务4进队
-    // 1000ms时，1完成，输出1
-    // 1200ms时，4完成，输出4
+  const timeout = (time) => new Promise(resolve => {
+    setTimeout(resolve, time)
+  })
 
-    // const p1 = new Promise(()=>{})
-    // console.log(p1[Symbol.toStringTag])
+
+  const scheduler = new SchedulerV2()
+  const addTask = (time, order) => {
+    scheduler.add(() => timeout(time)).then(() => console.log(order, time))
+  }
+
+  const random = () => {
+    return Math.floor(Math.random() * 1000)
+  }
+  for (let i = 0; i < 10; i++) {
+    const r = random()
+    console.log('task', i, r)
+    addTask(r, i)
+  }
+
+  const btn = document.querySelector('#btn')
+  btn.addEventListener('click', function () {
+    const r = random()
+    addTask(2000, r)
+  })
+
+
+  // output: 2 3 1 4
+
+  // 一开始，1、2两个任务进入队列
+  // 500ms时，2完成，输出2，任务3进队
+  // 800ms时，3完成，输出3，任务4进队
+  // 1000ms时，1完成，输出1
+  // 1200ms时，4完成，输出4
+
+  // const p1 = new Promise(()=>{})
+  // console.log(p1[Symbol.toStringTag])
 </script>
 </html>

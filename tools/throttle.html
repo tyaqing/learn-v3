@@ -4,79 +4,101 @@
     <meta charset="UTF-8">
     <title>throttle</title>
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-
 </head>
 <body>
 
-<div class="p-20">
+<div class="p-20 cursor-pointer">
     <div id="btn" class="p-10 w-32 h-32 flex items-center justify-center bg-red-200 shadow rounded-full">click</div>
 </div>
 
 </body>
 <script>
-    function throttle(func, delay, options = {leading: true, trailing: false}) {
-        let timer, previous = 0;
-        let resFunc;
-        const {leading, trailing} = options
-        /*
-        简言之
-        leading触发使用时间戳remaining做计算
-        trailing触发使用定时器timer结合remaining做触发
-         */
-        resFunc = function (...args) {
-            const now = Date.now()
-            // 如果leading不触发,就让remaining一直为delay
-            if (!leading) previous = now
-            let remaining = (previous + delay) - now
-            if (remaining <= 0) {
-                // 这里是先去掉之前的定时器
-                if (timer) {
-                    clearTimeout(timer)
-                    timer = null
-                }
-                // 记录当前时间,等时间过后才可以触发
-                previous = now
-                func.call(this, ...args)
-                // 判断timer防止二次调用
-            } else if (!timer && trailing) {
-                // 这里是trailing的逻辑
-                timer = setTimeout(() => {
-                    previous = now
-                    timer = null;
-                    func.call(this, ...args)
-                }, remaining)
-            }
-            console.log(remaining)
-
-        };
-        resFunc.cancel = function () {
-            clearTimeout(timer)
-            previous = 0;
-            timer = null
+  function throttle(func, delay, options = {leading: true, trailing: false}) {
+    let timer, previous = 0;
+    const {leading, trailing} = options
+    /*
+    简言之
+    leading触发使用时间戳remaining做计算
+    trailing触发使用定时器timer结合remaining做触发
+     */
+    const resFunc = function (...args) {
+      const now = Date.now()
+      // 如果leading不触发,就让remaining一直为delay
+      if (!leading) previous = now
+      let remaining = (previous + delay) - now
+      // 这里是leading立即执行，利用的是时间戳
+      if (remaining <= 0) {
+        // 这里是先去掉之前的定时器
+        if (timer) {
+          clearTimeout(timer)
+          timer = null
         }
-        return resFunc
+        // 记录当前时间,等时间过后才可以触发
+        previous = now
+        func.call(this, ...args)
+        // 判断timer防止二次调用
+      } else if (!timer && trailing) {
+        // 这里是trailing的逻辑 使用定时器，在定时器存在期间不执行
+        timer = setTimeout(() => {
+          previous = now
+          timer = null;
+          func.call(this, ...args)
+        }, remaining)
+      }
+      console.log(remaining)
+    };
+    resFunc.cancel = function () {
+      clearTimeout(timer)
+      previous = 0;
+      timer = null
     }
+    return resFunc
+  }
 
-    function throttleV2(func, delay) {
-        let timer = null
-        return function (...arg) {
-            if (timer) return
-            func.call(this, ...arg)
-            timer = setTimeout(() => {
-                timer = null
-            }, delay)
-        }
+  function throttleV2(func, delay) {
+    let timer = null
+    return function (...arg) {
+      if (timer) return
+      func.call(this, ...arg)
+      timer = setTimeout(() => {
+        timer = null
+      }, delay)
     }
-    function sayHi(e) {
-        console.log('say Hi', this, e)
-    }
+  }
 
-    const btn = document.querySelector('#btn')
-    const throttleSayHi = throttle(sayHi, 1000)
-    btn.addEventListener('click', throttleSayHi)
-    const event = new Event('click');
-    // setInterval(() => {
-    //     btn.dispatchEvent(event)
-    // }, 400)
+  // 这个版本更简单
+  function throttleV3(func, delay, options = {leading: true, trailing: false}) {
+    let timer
+    const {leading, trailing} = options
+    const main = function () {
+      if (timer) return
+      if (leading) {
+        timer = setTimeout(() => {
+          timer = null
+        }, delay)
+        func.call(this)
+      } else {
+        timer = setTimeout(() => {
+          func.call(this)
+          timer = null
+        }, delay)
+      }
+    }
+    main.cancel = function () {
+    }
+    return main
+  }
+
+  function sayHi(e) {
+    console.log('say Hi', this, e)
+  }
+
+  const btn = document.querySelector('#btn')
+  const throttleSayHi = throttleV3(sayHi, 1000, {leading: false, trailing: true})
+  btn.addEventListener('click', throttleSayHi)
+  const event = new Event('click');
+  // setInterval(() => {
+  //     btn.dispatchEvent(event)
+  // }, 400)
 </script>
 </html>

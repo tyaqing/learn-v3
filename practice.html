@@ -16,15 +16,25 @@
 <body>
 </body>
 <script>
-    const p = Promise.resolve().then(()=>{
-      console.log('1??')
-    })
-    const p2 = p.then(()=>{
-      console.log('p t')
-    })
-
-    p2.then(()=>{
-      console.log('3')
-    })
+  function permute(nums) {
+    const ans = [], path = [],used=Array(nums.length).fill(false);
+    function dfs() {
+      if (path.length === nums.length) {
+        ans.push(path.slice())
+        return
+      }
+      for (let i = 0; i < nums.length; i++) {
+        if(used[i]) continue
+        path.push(nums[i])
+        used[i] = true
+        dfs()
+        path.pop()
+        used[i] = false
+      }
+    }
+    dfs()
+    return ans
+  };
+  console.log(permute([1,2,3]))
 </script>
 </html>

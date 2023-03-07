@@ -18,10 +18,8 @@
   }
 
   function flatV2(arr, depth = 1) {
-    if (!depth) return arr;
-    return arr.reduce((prev, curr) => {
-      return prev.concat(Array.isArray(curr) ? flatV2(curr, depth - 1) : curr)
-    }, [])
+    if (!depth) return arr
+    return arr.reduce((prev, curr) => prev.concat(Array.isArray(curr) ? flatV2(curr,depth-1) : curr), [])
   }
 
   const testArr = [1, [2, [3, [4]]], 5, [6]]

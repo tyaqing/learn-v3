@@ -26,15 +26,15 @@
   }
 
   function curryV2(func, ...arg) {
-    const argLength = func.length;
-    return function (...extArg){
-      const combine  = arg.concat(extArg)
-      if (combine.length < argLength) return curryV2.call(this,func, ...combine)
-      else return func.call(this, ...combine)
+    const argLength = func.length
+    return function (...innerArg) {
+      const combine = arg.concat(innerArg)
+      if (combine.length < argLength) return curryV2.call(this, func, ...combine)
+      return func.call(this, ...combine)
     }
   }
 
-  const curryAdd = curryV2(add, 1, 2)
+  const curryAdd = curryV2(add, 2, 3)
   console.log(curryAdd(3)(4))
 
 </script>

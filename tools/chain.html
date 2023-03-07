@@ -31,15 +31,15 @@
 
   function sumV2(...num) {
     const stack = []
-    stack.push(...num)
-    const main = (...extNums) => {
-      stack.push(...extNums)
-      return main
+
+    const foo = (...nums2) => {
+      stack.push(...nums2)
+      return foo
     }
-    main.valueOf = () => {
+    foo.valueOf = () => {
       return stack.reduce((prev, curr) => prev + curr, 0)
     }
-    return main
+    return foo(...num)
   }
 
   const sum1 = sumV2(1)
@@ -47,7 +47,7 @@
 
 
   console.log(sumV2(1)(2)(3).valueOf())
-  console.log(sumV2(1)(2)(3)(4).valueOf())
+  console.log(sumV2(1)(2)(32)(4).valueOf())
   console.log(sumV2(1)(2, 3, 4).valueOf())
 </script>
 </html>

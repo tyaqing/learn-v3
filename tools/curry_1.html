@@ -20,7 +20,7 @@
     return function (...args2) {
       const combine = args1.concat(args2)
       // 这里继续绑定this是在回调函数里面仍然可以获取到对象的this
-      if (combine.length < argLength) return curry.call(this, func, ...combine)
+      if (combine.length < argLength) return curry_1.call(this, func, ...combine)
       else return func.call(this, ...combine)
     }
   }

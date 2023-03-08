@@ -44,21 +44,20 @@
 
   function debounceV2(func, delay, immediate = false) {
     let timer = null
+
     function main(...arg) {
       timer && clearTimeout(timer)
       if (immediate) {
-        const canRun = !timer
+        !timer && func.call(this, ...arg)
         timer = setTimeout(() => {
           timer = null
         }, delay)
-        if (canRun) func.call(this, ...arg)
       } else {
         timer = setTimeout(() => {
           func.call(this, ...arg)
           timer = null
         }, delay)
       }
-
     }
 
     return main

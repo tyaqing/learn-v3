@@ -15,10 +15,7 @@
     function parse(n) {
         return Number(n).toLocaleString()
     }
-    //(?=pattern) 零宽正向先行断言
-    function parseV2(n) {
-        return String(n).replace(/(\d)(?=(\d{3})($|\.))/g, '$1,')
-    }
+
     // 分组的形式
     function parseV3(n) {
         const res = Number(n).toFixed(2).toString().split('.')
@@ -31,18 +28,24 @@
         return combine.join(',') + '.' + res[1]
     }
 
-    function parseV4(str) {
-        return str.replace(/(\d)(?=(\d{3})(\.|$))/g, '$1,')
+
+    //(?=pattern) 零宽正向先行断言
+    function parseV2(str) {
+        return String(str).replace(/(\d)(?=(\d{3}))($|\.)/g, '$1,')
     }
 
     const price = 77281.23
     const price2 = 1177281
 
     console.log(parse(price))
-    console.log(parseV2(price))
+
     console.log(parseV3(price))
     console.log(parse(price2))
-    console.log(parseV2(price2))
+
     console.log(parseV3(price2))
+
+    console.log(parseV2(price))
+    console.log(parseV2(price2))
+
 </script>
 </html>

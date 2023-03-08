@@ -25,23 +25,32 @@
 
   function deepCopy(obj) {
     let res
-    if (Array.isArray(obj)) res = obj.map(item => deepCopy(item))
+    if (Array.isArray(obj)) res = obj.map(item => deepCopy_1(item))
     else if (Object.prototype.toString.call(obj) === "[object Object]") {
       res = Object.create(null)
       for (const key in obj) {
         //TODO hasOwnProperty
         //如果不想让其输出原型中的属性和方法，可以使用hasOwnProperty方法进行过滤
-        if (obj.hasOwnProperty(key)) res[key] = deepCopy(obj[key])
+        if (obj.hasOwnProperty(key)) res[key] = deepCopy_1(obj[key])
       }
     } else res = obj
     return res;
   }
 
+  // 这个版本解决了循环引用
   function deepCopyV2(obj) {
+    const map = new Map()
+    map.set(obj, true)
     if (typeof obj !== 'object') return obj
     let res = Array.isArray(obj) ? [] : {}
     Object.keys(obj).forEach(key => {
-      res[key] = deepCopy(obj[key])
+      if (map.get(obj[key])) {
+        res[key] = map.get(obj[key])
+      } else {
+        res[key] = deepCopy_1(obj[key])
+        map.set(obj[key], true)
+      }
+
     })
     return res
   }
@@ -55,6 +64,8 @@
     print() {
     }
   }
+  // ⚠️循环引用，直接爆栈
+  originObject.d = originObject
 
   // shallow测试
   // const sArr = shallowCopy(originArray)

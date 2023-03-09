@@ -50,36 +50,35 @@ eat->sleep(5)->eat->sleep(6)->eat-work
 
   class LazyManClassV2 {
     queue = []
-
     constructor(name) {
-      console.log('my name is ', name)
+      console.log('my name is',name)
       setTimeout(()=>{
         this.executor()
       })
-    }
-
-    eat(food) {
-      const task = ()=>{
-        console.log('eat ',food)
-        this.executor()
-      }
-      this.queue.push(task)
       return this
     }
+    eat(name){
+      const fn = ()=>{
+        console.log('eat',name)
+        this.executor()
+      }
+      this.queue.push(fn)
+      return this
+    }
+    sleep(delay){
 
-    sleep(delay) {
-      const task = ()=>{
-        console.log('sleep ',delay)
+      const fn = ()=>{
+        console.log('sleep...',delay)
         setTimeout(()=>{
           this.executor()
         },delay)
       }
-      this.queue.push(task)
+      this.queue.push(fn)
       return this
     }
 
-    executor() {
-      const task = this.queue.shift()
+    executor(){
+      const task = this.queue.pop()
       task && task()
     }
   }

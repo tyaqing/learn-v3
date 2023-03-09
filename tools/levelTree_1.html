@@ -100,18 +100,21 @@
   }
 
   function toTreeV2(list) {
+    const ans = []
     const kv = {}
-    const res = []
-    list.forEach(item => kv[item.id] = item)
-    for (const item of list) {
+    for (const item of list){
+      kv[item.id] = item
+    }
+    for (const item of list){
       const parent = kv[item.parent_id]
-      if (parent) {
-        (parent.children || (parent.children = [])).push(item)
-      } else {
-        res.push(item)
+      if (parent){
+        (parent.children || (parent.children=[])).push(item)
+      }else{
+        ans.push(item)
       }
     }
-    return res
+    return ans
+
   }
 
   console.log(toTreeV2(menu_list))

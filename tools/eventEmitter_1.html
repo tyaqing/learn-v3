@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>eventEmitter</title>
+</head>
+<body>
+
+</body>
+<script>
+  // 实现发布订阅
+
+  class eventEmitter {
+    hub = {}
+
+    // 注册监听
+    on(name, func) {
+      if (!this.hub[name]) this.hub[name] = []
+      this.hub[name].push(func)
+    }
+
+    emit(name, data) {
+      if (!this.hub[name]) throw Error('this event is not register')
+      this.hub[name].forEach(func => func(data))
+    }
+
+    off(name, func) {
+      if (!this.hub[name]) throw Error('this event is not register')
+      const targetIndex = this.hub[name].indexOf(func)
+      this.hub[name].splice(targetIndex, 1)
+    }
+
+    offAll(name) {
+      if (!this.hub[name]) throw Error('this event is not register')
+      this.hub[name] = [];
+    }
+
+  }
+
+
+  class eventEmitterV2 {
+    hub = {}
+
+    on(name,cb) {
+      if (!this.hub[name]){
+        this.hub[name] = []
+      }
+      this.hub[name].push(cb)
+    }
+
+    emit(name,msg) {
+      for (const task of this.hub[name]){
+        task(msg)
+      }
+    }
+
+    off(name,cb) {
+      const index =  this.hub[name].indexOf(cb)
+      this.hub[name].splice(index,1)
+    }
+  }
+
+  const eventBus = new eventEmitterV2()
+  eventBus.on('first', (data) => {
+    console.log('收到first信息1', data)
+  })
+  const someFunc = (data) => {
+    console.log('收到first信息2', data)
+  }
+  eventBus.on('first', someFunc)
+
+
+  eventBus.emit('first', '嘿嘿')
+  eventBus.off('first', someFunc)
+  eventBus.emit('first', '第二条')
+
+
+</script>
+</html>

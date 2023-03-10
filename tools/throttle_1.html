@@ -67,24 +67,22 @@
   }
 
   // 这个版本更简单
-  function throttleV3(func, delay, options = {leading: true, trailing: false}) {
-    let timer
-    const {leading, trailing} = options
-    const main = function () {
-      if (timer) return
-      if (leading) {
-        timer = setTimeout(() => {
+  function throttleV3(func, delay, leading = false) {
+    let timer = null
+    function main(...arg) {
+      if(timer) return
+      if (leading){
+        timer = setTimeout(()=>{
+            timer = null
+        },delay)
+        func.call(this,...arg)
+      }else{
+        timer = setTimeout(()=>{
+          func.call(this,...arg)
           timer = null
-        }, delay)
-        func.call(this)
-      } else {
-        timer = setTimeout(() => {
-          func.call(this)
-          timer = null
-        }, delay)
+        },delay)
+
       }
-    }
-    main.cancel = function () {
     }
     return main
   }
@@ -94,7 +92,7 @@
   }
 
   const btn = document.querySelector('#btn')
-  const throttleSayHi = throttleV3(sayHi, 1000, {leading: false, trailing: true})
+  const throttleSayHi = throttleV3(sayHi, 1000)
   btn.addEventListener('click', throttleSayHi)
   const event = new Event('click');
   // setInterval(() => {

@@ -58,20 +58,19 @@
     function main() {
     }
 
-    main.task = function (delay,func) {
-      const f = () =>{
+    main.task = (innerDelay, innerTask) => {
+      const f = ()=>{
         setTimeout(()=>{
-          func()
+          innerTask()
           executor()
-        },delay)
+        },innerDelay)
       }
       queue.push(f)
       return main
     }
-
-    function executor() {
-      const p = queue.shift()
-      p && p()
+    function executor(){
+      const func = queue.shift()
+      func && func()
     }
     main.task(delay,task)
     executor()

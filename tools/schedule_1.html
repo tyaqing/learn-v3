@@ -22,7 +22,7 @@
 
     add(task) {
       this.queue.push(task)
-      return this.schedule()
+      return this.schedule_1()
     }
 
     schedule() {
@@ -37,7 +37,7 @@
         return promise
       } else {
         // 异步递归消费
-        return Promise.race(this.run).then(() => this.schedule())
+        return Promise.race(this.run).then(() => this.schedule_1())
       }
     }
   }
@@ -45,25 +45,29 @@
 
   class SchedulerV2 {
     queue = []
-    inProgressQueue = []
-    concurrencyTotal = 2
+    inProgressTask = []
+    concurrencyCount = 2
+
+    constructor(concurrencyCount = 2) {
+      this.concurrencyCount = concurrencyCount
+    }
+
+    // 增加任务
     add(task) {
       this.queue.push(task)
       return this._executor()
     }
 
     _executor() {
-      if (this.inProgressQueue.length < this.concurrencyTotal) {
+      if (this.inProgressTask.length < this.concurrencyCount) {
         const task = this.queue.shift()
-        // 这里相当于
         const promise = task().then(() => {
-          this.inProgressQueue.splice(this.inProgressQueue.indexOf(promise), 1)
+          this.inProgressTask.splice(this.inProgressTask.indexOf(promise), 1)
         })
-        this.inProgressQueue.push(promise)
+        this.inProgressTask.push(promise)
         return promise
       } else {
-        // 排队等待入队
-        return Promise.race(this.inProgressQueue).then(() => this._executor())
+        return Promise.race(this.inProgressTask).then(() => this._executor())
       }
     }
 
